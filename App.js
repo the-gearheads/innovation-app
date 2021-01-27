@@ -1,70 +1,64 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+//import ScriptTag from 'react-script-tag';
+//<ScriptTag type="text/javascript" src="script.js"/>
 
 export default function App() {
   return (
-    <View style={styles.root}>
-      <View style={styles.container1}>
-        <Text style={styles.header}> Gearheads </Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>This is a header</Text>
+
+      <View style={styles.form_container}>
+        <Text>Login:</Text>
+        <TextInput style={styles.textInputs} placeholder="   Username:"></TextInput>
+        <TextInput style={styles.textInputs} placeholder="   Password:"></TextInput>
+        
       </View>
-      <View style={styles.container2}>
-        <Text style={styles.text}>Welcome to gearheads.js!!!</Text>
-        <Text style={styles.body}> This is run from my other computer and renders on your screen! </Text>
+      <View style={styles.btn_container}>
+        <Button style={styles.submitBtn} title="Create Account" color="red" /*onPress={Submit()}*/></Button>
+        <Button style={styles.submitBtn} title="Login" color="red" /*onPress={Submit()}*/></Button>
       </View>
+      <StatusBar style="auto" />
     </View>
   );
 }
 
-
-// export default App2;
-
-// class App2 extends Component{
-//   render(){
-//     return (<View style={styles.root}>
-//       <View style={styles.container1}>
-//         <Text style={styles.header}> Gearheads </Text>
-//       </View>
-//       <View style={styles.container2}>
-//         <Text style={styles.text}>Welcome to gearheads.js!!!</Text>
-//         <Text style={styles.body}> This is run from my other computer and renders on your screen! </Text>
-//       </View>
-//     </View>)
-//   }
-// }
-
 const styles = StyleSheet.create({
-  root:{
+  container: {
     flex: 1,
-    backgroundColor: "white"
-  },
-  container1:{
-    flex: 1,
-    backgroundColor: "purple",
+    backgroundColor: '#fff',
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
-  header:{
-    color: "white",
-    fontSize: 20,
-    fontWeight: "900"
+  form_container: 
+  {
+    backgroundColor: "#fff",
+    width: 300,
+    height: 100,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  container2: {
-    flex: 10,
-    backgroundColor: "white",
-    alignItems: 'center',
-    justifyContent: 'center'
+  textInputs: 
+  {
+    width: 150,
+    height: 25,
+    borderColor: "black",
+    borderWidth: 3,
+    margin: 10,
+    borderRadius: 10,
+
   },
-  text:{
-    color: 'black',
-    fontSize: 50,
-    textAlign: 'center'
+  header: 
+  {
+    fontSize: 24,
+    flex: 0.1,
   },
-  body:{
-    padding: 15,
-    color: 'black',
-    fontWeight: "bold",
-    fontSize: 20,
-    textAlign: 'center'
+  btn_container: 
+  {
+    flex: 0.2,
+    //justifyContent: 'center',
+    //alignItems: 'center',
+    flexDirection: "row",
   }
 });
