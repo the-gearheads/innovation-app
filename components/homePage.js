@@ -18,9 +18,8 @@ import { StyleSheet, Text, View } from 'react-native';
 
 
 
-export default class App extends Component{
-   render(){
-     return (
+export default function Home() {
+  return (
      <View style={styles.root}>
        <View style={styles.playButton}>
         
@@ -32,8 +31,7 @@ export default class App extends Component{
 
        </View>
      </View>)
-   }
- }
+}
 
 const styles = StyleSheet.create({
   root:{

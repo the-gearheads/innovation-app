@@ -1,26 +1,32 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { NativeRouter, Route, Link } from "react-router-native";
+//import {Home} from "components";
 //import ScriptTag from 'react-script-tag';
 //<ScriptTag type="text/javascript" src="script.js"/>
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>This is a header</Text>
+    <NativeRouter>
+      <View style={styles.container}>
+        <View style={styles.nav}>
+          <Link to="/" underlayColor="#f0f4f7" style={styles.navItem}>
+            <Text>Home</Text>
+          </Link>
+          <Link to="/about" underlayColor="#f0f4f7" style={styles.navItem}>
+            <Text>About</Text>
+          </Link>
+          <Link to="/topics" underlayColor="#f0f4f7" style={styles.navItem}>
+            <Text>Topics</Text>
+          </Link>
+        </View>
 
-      <View style={styles.form_container}>
-        <Text>Login:</Text>
-        <TextInput style={styles.textInputs} placeholder="   Username:"></TextInput>
-        <TextInput style={styles.textInputs} placeholder="   Password:"></TextInput>
-        
+        <Route exact path="/" component={Home} />
+        <Route path="/about" component={About} />
+        <Route path="/topics" component={Topics} />
       </View>
-      <View style={styles.btn_container}>
-        <Button style={styles.submitBtn} title="Create Account" color="red" /*onPress={Submit()}*/></Button>
-        <Button style={styles.submitBtn} title="Login" color="red" /*onPress={Submit()}*/></Button>
-      </View>
-      <StatusBar style="auto" />
-    </View>
+    </NativeRouter>
   );
 }
 
