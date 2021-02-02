@@ -26,13 +26,13 @@ export default function Login() {
 
 function fetchText() 
 {
-  let response = await fetch('');
+  let response = fetch("http://68.43.198.63:8000/login");
   console.log(reponse.status);
   console.log(response.statusText);
 
   if(response.status === 200) 
   {
-    let data = await response.text();
+    let data = response.text();
     console.log(data);
   }
 }
