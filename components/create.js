@@ -2,19 +2,29 @@ import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
-export default function Login({ navigation }) {
-  return <LoginForm navigation={navigation} />;
+export default function CreateAccount({ route, navigation }) {
+  const { username, password } = route.params;
+  return (
+    <CreateAccountForm
+      navigation={navigation}
+      username={username}
+      password={password}
+    />
+  );
 }
 
-class LoginForm extends Component {
+class CreateAccountForm extends Component {
   constructor(props) {
     super(props);
     this.navigation = props.navigation;
+    this.username = props.username;
+    this.password = props.password;
+    console.log(props.username);
   }
 
   state = {
-    username: "",
-    password: "",
+    username: this.username,
+    password: this.password,
   };
   handleUsername = (text) => {
     this.setState({ username: text });
@@ -26,33 +36,27 @@ class LoginForm extends Component {
   render() {
     return (
       <View style={login_styles.container}>
-        <Text style={login_styles.header}>Login:</Text>
+        <Text style={login_styles.header}>Create Account:</Text>
         <TextInput
           style={login_styles.input}
           placeholder=" Username:"
+          value={this.props.username}
           onChangeText={this.handleUsername}
+          editable={false}
         ></TextInput>
         <TextInput
           style={login_styles.input}
           placeholder=" Password:"
+          value={this.props.password}
           onChangeText={this.handlePassword}
+          editable={false}
         ></TextInput>
 
         <Button
           style={login_styles.submitButton}
           title="Create Account"
           onPress={() =>
-            this.navigation.navigate("Create Account", {
-              username: this.state.username,
-              password: this.state.password,
-            })
-          }
-        ></Button>
-        <Button
-          style={login_styles.submitButton}
-          title="Login"
-          onPress={() =>
-            this.fetchText(this.state.username, this.state.password)
+            this.register(this.state.username, this.state.password)
           }
         ></Button>
         <StatusBar style="auto" />
@@ -60,19 +64,21 @@ class LoginForm extends Component {
     );
   }
 
-  fetchText = (username, password) => {
-    let response = fetch("http://68.43.198.63:8000/login", {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({ username: username, password: password }),
-      credentials: "include",
-    }).then((response) => {
-      if (response) {
-        this.navigation.navigate("Home");
-      } else {
-        alert("Credentials are invalid.");
-      }
-    });
+  register = (username, password) => {
+    if (username != "" || password != "") {
+      let response = fetch("http://68.43.198.63:8000/register", {
+        method: "POST",
+        body: JSON.stringify({ username: username, password: password }),
+      }).then((response) => {
+        if (response) {
+          this.navigation.navigate("Login");
+        } else {
+          alert("How did you fail this?");
+        }
+      });
+    } else {
+      alert("Enter valid username or password.");
+    }
   };
 }
 
