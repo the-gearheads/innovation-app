@@ -3,8 +3,11 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 //import ScriptTag from 'react-script-tag';
 //<ScriptTag type="text/javascript" src="script.js"/>
+import homePage from './homePage.js';
 
-export default function App() {
+export default homePage;
+
+function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>This is a header</Text>
