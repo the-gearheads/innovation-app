@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 //import ScriptTag from 'react-script-tag';
 //<ScriptTag type="text/javascript" src="script.js"/>
 import homePage from './homePage.js';
+import friendsPage from './friendsPage.js';
 
 export default homePage;
 
