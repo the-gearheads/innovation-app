@@ -1,107 +1,46 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import {
-  friendsIcon,
-  playIcon,
-  settingsIcon,
-  statsIcon,
-  homeIcon,
-} from "./imageNames.js";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
-// export default function App() {
-//   return (
-//     <View style={styles.root}>
-//       <View style={styles.container1}>
-//         <Text style={styles.header}> Gearheads </Text>
-//       </View>
-//       <View style={styles.container2}>
-//         <Text style={styles.text}>Welcome to gearheads.js!!!</Text>
-//         <Text style={styles.body}> This is run from my other computer and renders on your screen! </Text>
-//       </View>
-//     </View>
-//   );
-// }
-
-export default function Home() {
+export default function Home({ navigation }) {
   return (
-    <View style={styles2.root}>
-      <View style={styles2.feed}></View>
-      <View style={styles2.navbar}>
-        <View style={styles2.settingsBtn}></View>
-        <View style={styles2.homeBtn}></View>
-        <View style={styles2.playBtn}></View>
-        <View style={styles2.friendsBtn}></View>
-        <View style={styles2.statusBtn}></View>
+    <View style={styles.root}>
+      <View style={styles.playButton}>
+        <Button title="Login" onPress={() => navigation.navigate("Login")} />
       </View>
     </View>
   );
 }
 
-const styles2 = StyleSheet.create({
-  root: {
-    display: "flex",
+const styles = StyleSheet.create({
+  container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 36,
+  },
+  navItem: {
+    fontSize: 36,
+  },
+  root: {
+    flex: 1,
+    backgroundColor: "grey",
+  },
+  container1: {
+    flex: 1,
+    backgroundColor: "purple",
+    alignItems: "center",
     justifyContent: "center",
   },
-  feed: {
-    width: "100vw",
-    height: "85vh",
+  text: {
+    color: "black",
+    fontSize: 50,
+    textAlign: "center",
   },
-  navbar: {
-    height: "15vh",
-    width: "100vw",
-    display: "flex",
-    flexDirection: "row",
-    alignSelf: "flex-end",
-  },
-  playBtn: {
-    height: "100%",
-    width: "20%",
+  playButton: {
     backgroundColor: "blue",
-    backgroundImage: 'url("' + playIcon + '")',
-    backgroundSize: "auto 100%",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  },
-  friendsBtn: {
-    height: "100%",
-    width: "20%",
-    backgroundColor: "purple",
-    backgroundImage: 'url("' + friendsIcon + '")',
-    backgroundSize: "auto 100%",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  },
-  settingsBtn: {
-    height: "100%",
-    width: "20%",
-    backgroundColor: "orange",
-    backgroundImage: 'url("' + settingsIcon + '")',
-    backgroundSize: "auto 100%",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  },
-  homeBtn: {
-    height: "100%",
-    width: "20%",
-    backgroundColor: "green",
-    backgroundImage: 'url("' + homeIcon + '")',
-    backgroundSize: "auto 100%",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  },
-  statusBtn: {
-    height: "100%",
-    width: "20%",
-    backgroundColor: "red",
-    backgroundImage: 'url("' + statsIcon + '")',
-    backgroundSize: "auto 100%",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  },
-  btnText: {
-    color: "#EFFBFB",
+    width: 50,
+    height: 50,
   },
 });
