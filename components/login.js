@@ -1,77 +1,96 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
-//import ScriptTag from 'react-script-tag';
-//<ScriptTag type="text/javascript" src="script.js"/>
+import { StatusBar } from "expo-status-bar";
+import React, { Component } from "react";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
-export default function Login() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.header}>This is a header</Text>
+export default function Login({ navigation }) {
+  return <LoginForm navigation={navigation} />;
+}
 
-      <View style={styles.form_container}>
+class LoginForm extends Component {
+  constructor(props) {
+    super(props);
+    this.navigation = props.navigation;
+  }
+
+  state = {
+    username: "",
+    password: "",
+  };
+  handleUsername = (text) => {
+    this.setState({ username: text });
+  };
+  handlePassword = (text) => {
+    this.setState({ password: text });
+  };
+
+  render() {
+    return (
+      <View style={login_styles.container}>
         <Text>Login:</Text>
-        <TextInput style={styles.textInputs} placeholder="   Username:"></TextInput>
-        <TextInput style={styles.textInputs} placeholder="   Password:"></TextInput>
-        
-      </View>
-      <View style={styles.btn_container}>
-        <Button style={styles.submitBtn} title="Create Account" color="red" /*onPress={Submit()}*/></Button>
-        <Button style={styles.submitBtn} title="Login" color="red" onPress={fetchText()}></Button>
-      </View>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+        <TextInput
+          style={login_styles.input}
+          placeholder="   Username:"
+          onChangeText={this.handleUsername}
+        ></TextInput>
+        <TextInput
+          style={login_styles.input}
+          placeholder="   Password:"
+          onChangeText={this.handlePassword}
+        ></TextInput>
 
-function fetchText() 
-{
-  let response = fetch("http://68.43.198.63:8000/login");
-  console.log(reponse.status);
-  console.log(response.statusText);
-
-  if(response.status === 200) 
-  {
-    let data = response.text();
-    console.log(data);
+        <Button
+          style={login_styles.submitButton}
+          title="Create Account"
+          color="red"
+          onPress={() => this.navigation.navigate("CreateAccount")}
+        ></Button>
+        <Button
+          style={login_styles.submitButton}
+          title="Login"
+          color="red"
+          onPress={() =>
+            this.fetchText(this.state.username, this.state.password)
+          }
+        ></Button>
+        <StatusBar style="auto" />
+      </View>
+    );
   }
+
+  fetchText = (username, password) => {
+    let response = fetch("http://68.43.198.63:8000/login", {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({ username: username, password: password }),
+      credentials: "include",
+    }).then((response) => {
+      console.log(response);
+      if (response) {
+        this.navigation.navigate("Home");
+      } else {
+        alert("Credentials are invalid.");
+      }
+    });
+  };
 }
 
-const styles = StyleSheet.create({
+const login_styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: "center",
-    justifyContent: "center",
+    paddingTop: 23,
   },
-  form_container: 
-  {
-    backgroundColor: "#fff",
-    width: 300,
-    height: 100,
-    alignItems: "center",
-    justifyContent: "center",
+  input: {
+    margin: 15,
+    height: 40,
+    borderColor: "#7a42f4",
+    borderWidth: 1,
   },
-  textInputs: 
-  {
-    width: 150,
-    height: 25,
-    borderColor: "black",
-    borderWidth: 3,
-    margin: 10,
-    borderRadius: 10,
-
+  submitButton: {
+    backgroundColor: "#7a42f4",
+    padding: 10,
+    margin: 15,
+    height: 40,
   },
-  header: 
-  {
-    fontSize: 24,
-    flex: 0.1,
+  submitButtonText: {
+    color: "white",
   },
-  btn_container: 
-  {
-    flex: 0.2,
-    //justifyContent: 'center',
-    //alignItems: 'center',
-    flexDirection: "row",
-  }
 });

@@ -1,41 +1,46 @@
-import { StatusBar } from 'expo-status-bar';
-import React, {Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React, { Component } from "react";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
-export default function Home() {
+export default function Home({ navigation }) {
   return (
-     <View style={styles.root}>
-       <View style={styles.playButton}>
-        
-       </View>
-       <View >
-
-       </View>
-       <View>
-
-       </View>
-     </View>)
+    <View style={styles.root}>
+      <View style={styles.playButton}>
+        <Button title="Login" onPress={() => navigation.navigate("Login")} />
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  root:{
+  container: {
     flex: 1,
-    backgroundColor: "grey"
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 36,
   },
-  container1:{
+  navItem: {
+    fontSize: 36,
+  },
+  root: {
+    flex: 1,
+    backgroundColor: "grey",
+  },
+  container1: {
     flex: 1,
     backgroundColor: "purple",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
-  text:{
-    color: 'black',
+  text: {
+    color: "black",
     fontSize: 50,
-    textAlign: 'center'
+    textAlign: "center",
   },
-  playButton:{
+  playButton: {
     backgroundColor: "blue",
     width: 50,
-    height: 50
-  }
+    height: 50,
+  },
 });
