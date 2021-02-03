@@ -13,65 +13,40 @@ class LoginForm extends Component {
   }
 
   state = {
-    username: "",
-    password: "",
-  };
+    username: '',
+    password: ''
+  }
   handleUsername = (text) => {
-    this.setState({ username: text });
-  };
+    this.setState({ username: text })
+  }
   handlePassword = (text) => {
-    this.setState({ password: text });
-  };
+    this.setState({ password: text })
+  }
 
   render() {
     return (
       <View style={login_styles.container}>
-        <Text>Login:</Text>
-        <TextInput
-          style={login_styles.input}
-          placeholder="   Username:"
-          onChangeText={this.handleUsername}
-        ></TextInput>
-        <TextInput
-          style={login_styles.input}
-          placeholder="   Password:"
-          onChangeText={this.handlePassword}
-        ></TextInput>
+        <Text style={login_styles.header}>Login:</Text>
+        <TextInput style={login_styles.input} placeholder=" Username:" onChangeText={this.handleUsername}></TextInput>
+        <TextInput style={login_styles.input} placeholder=" Password:" onChangeText={this.handlePassword}></TextInput>
 
-        <Button
-          style={login_styles.submitButton}
-          title="Create Account"
-          color="red"
-          onPress={() => this.navigation.navigate("CreateAccount")}
-        ></Button>
-        <Button
-          style={login_styles.submitButton}
-          title="Login"
-          color="red"
-          onPress={() =>
-            this.fetchText(this.state.username, this.state.password)
-          }
-        ></Button>
+        <Button style={login_styles.submitButton} title="Create Account" onPress={() => this.navigation.navigate('Create Account', {username: this.state.username, password: this.state.password})}></Button>
+        <Button style={login_styles.submitButton} title="Login" onPress={() => this.fetchText(this.state.username, this.state.password)}></Button>
         <StatusBar style="auto" />
       </View>
     );
   }
 
   fetchText = (username, password) => {
-    let response = fetch("http://68.43.198.63:8000/login", {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({ username: username, password: password }),
-      credentials: "include",
-    }).then((response) => {
-      console.log(response);
-      if (response) {
-        this.navigation.navigate("Home");
-      } else {
-        alert("Credentials are invalid.");
-      }
-    });
-  };
+    let response = fetch("http://68.43.198.63:8000/login", { method: "POST", mode: 'no-cors', body: JSON.stringify({ username: username, password: password }), credentials: "include" })
+      .then(response => {
+        if (response) {
+          this.navigation.navigate('Home');
+        } else {
+          alert("Credentials are invalid.");
+        }
+      });
+  }
 }
 
 const login_styles = StyleSheet.create({
