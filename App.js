@@ -6,7 +6,7 @@ import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import homePage from './homePage.js';
 import friendsPage from './friendsPage.js';
 
-export default homePage;
+export default friendsPage;
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
         <Text>Login:</Text>
         <TextInput style={styles.textInputs} placeholder="   Username:"></TextInput>
         <TextInput style={styles.textInputs} placeholder="   Password:"></TextInput>
-        
+
       </View>
       <View style={styles.btn_container}>
         <Button style={styles.submitBtn} title="Create Account" color="red" /*onPress={Submit()}*/></Button>
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  form_container: 
+  form_container:
   {
     backgroundColor: "#fff",
     width: 300,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  textInputs: 
+  textInputs:
   {
     width: 150,
     height: 25,
@@ -53,12 +53,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
 
   },
-  header: 
+  header:
   {
     fontSize: 24,
     flex: 0.1,
   },
-  btn_container: 
+  btn_container:
   {
     flex: 0.2,
     //justifyContent: 'center',

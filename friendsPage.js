@@ -1,49 +1,58 @@
 import { StatusBar } from 'expo-status-bar';
-import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
-import {friendsIcon, playIcon, settingsIcon, statsIcon, homeIcon} from './imageNames.js';
-
-// export default function App() {
-//   return (
-//     <View style={styles.root}>
-//       <View style={styles.container1}>
-//         <Text style={styles.header}> Gearheads </Text>
-//       </View>
-//       <View style={styles.container2}>
-//         <Text style={styles.text}>Welcome to gearheads.js!!!</Text>
-//         <Text style={styles.body}> This is run from my other computer and renders on your screen! </Text>
-//       </View>
-//     </View>
-//   );
-// }
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { friendsIcon, playIcon, settingsIcon, statsIcon, homeIcon } from './imageNames.js';
 
 
-export default class friendsPage extends Component{
-   render(){
-     return (
-     <View style={styles.root}>
-         <View style={styles.addFriendContainer}>
-         <TextInput style={styles.usernameInput}></TextInput>
-         <View style={styles.submitUsername}><Text style={styles.submitText}>Add Friend</Text></View>
-         </View>
-       
-     </View>)
-   }
- }
+export default class friendsPage extends Component {
+  render() {
+    return (
+      <View style={styles.root}>
+        <AddFriendsContainer />
+      </View>)
+  }
+}
+
+class AddFriendsContainer extends Component {
+  render() {
+    return (
+      <View style={styles.addFriendContainer}>
+        <AddFriendsInput />
+        <AddFriendsSubmit />
+
+      </View>)
+  }
+}
+
+class AddFriendsInput extends Component {
+  render() {
+    return (
+      <TextInput style={styles.usernameInput}></TextInput>)
+  }
+}
+
+class AddFriendsSubmit extends Component {
+  render() {
+    return (
+      <TouchableOpacity style={styles.submitUsername} ></TouchableOpacity>
+      // <View style={styles.submitUsername}><Text style={styles.submitText}>Add Friend</Text></View>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
-  root:{
+  root: {
     display: 'flex',
     flex: 1,
     backgroundColor: "white"
   },
-  usernameInput:{
+  usernameInput: {
     width: '80%',
     height: '100%',
     fontSize: '7vh',
     backgroundColor: 'lightgrey'
   },
-  submitUsername:{
+  submitUsername: {
     width: '20%',
     height: '100%',
     fontSize: '7vh',
@@ -53,11 +62,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  submitText:{
+  submitText: {
     fontSize: '5vh',
     color: 'white'
   },
-  addFriendContainer:{
+  addFriendContainer: {
     width: '100%',
     height: '10vh',
     display: 'flex',
