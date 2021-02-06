@@ -18,7 +18,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Session" component={Session} />
-        
+
         <Stack.Screen name="Game" component={Game} />
         <Stack.Screen name="Friends" component={Friends} />
         <Stack.Screen name="Home" component={Home} />
