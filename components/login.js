@@ -61,12 +61,13 @@ class LoginForm extends Component {
   }
 
   fetchText = (username, password) => {
-    let response = fetch("http://68.43.198.63:8000/login", {
+    let response = fetch("http://68.43.198.63/api/login", {
       method: "POST",
       mode: "no-cors",
       body: JSON.stringify({ username: username, password: password }),
       credentials: "include",
     }).then((response) => {
+      //console.log(response.ok);
       if (response) {
         this.navigation.navigate("Home");
       } else {

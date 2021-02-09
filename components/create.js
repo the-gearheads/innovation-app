@@ -66,7 +66,7 @@ class CreateAccountForm extends Component {
 
   register = (username, password) => {
     if (username != "" || password != "") {
-      let response = fetch("http://68.43.198.63:8000/register", {
+      let response = fetch("http://68.43.198.63/api/register", {
         method: "POST",
         body: JSON.stringify({ username: username, password: password }),
       }).then((response) => {
