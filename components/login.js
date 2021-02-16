@@ -61,7 +61,7 @@ class LoginForm extends Component {
   }
 
   fetchText = (username, password) => {
-    let response = fetch("http://68.43.198.63/api/login", {
+    let response = fetch("http://app.gpgearheads.org/api/login", {
       method: "POST",
       mode: "no-cors",
       body: JSON.stringify({ username: username, password: password }),
