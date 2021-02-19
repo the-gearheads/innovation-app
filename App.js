@@ -8,6 +8,7 @@ import CreateAccount from "./components/create.js";
 import Home from "./components/homepage.js";
 import Friends from "./components/friends.js";
 import Play from "./components/play.js";
+import Game from "./components/game.js";
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Game" component={Game} />
         <Stack.Screen name="Play" component={Play} />
         <Stack.Screen name="Login" component={Login} />
         
@@ -22,6 +24,7 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} />
         
         <Stack.Screen name="Create Account" component={CreateAccount} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

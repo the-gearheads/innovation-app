@@ -183,7 +183,7 @@ function Date(play) {
 
 function Session(play) {
   return (
-    <View style={styles.sessionBox}>
+    <TouchableOpacity style={styles.sessionBox} onPress={() => play.play.navigation.navigate("Game")}>
         <Text>Friends and Date
           <List>
             <li>
@@ -192,7 +192,7 @@ function Session(play) {
             </li>
           </List>
         </Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
