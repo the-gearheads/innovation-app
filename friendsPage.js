@@ -54,7 +54,7 @@ const DATA = [
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    name: 'xxxExercisexxx',
+    name: 'ExerciseIsCool',
     sharedgames: '3 games shared',
     image: friendsIcon
   },
@@ -70,7 +70,7 @@ function Friend(item) {
   item = item.item;
   return (<View style={styles.friend}>
     <View style={styles.friendFirstC}>
-      <View style={[styles.friendPicture, { backgroundImage: 'url("' + friendsIcon + '")' }]} />
+      <View style={[styles.friendPicture, { backgroundImage: 'url("' + item.image + '")' }]} />
       <Text style={styles.friendName}>{item.name}</Text>
     </View>
     <View style={styles.sharedGames}><Text style={styles.sharedGamesText}>{item.sharedgames}</Text></View>
