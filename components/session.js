@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, FlatList } from "react-native";
+import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, FlatList, SegmentedControlIOSComponent } from "react-native";
 import PropTypes from "prop-types";
 import { List } from "@material-ui/core";
 //import { TouchableOpacity } from "react-native-gesture-handler";
@@ -43,7 +43,7 @@ class SessionPage extends Component {
         {this.state.dropdown[0]}
         {this.state.calendar[0]}
         {this.state.session[0]}
-        <TouchableOpacity style={styles.back} onPress={() => this.fetchFriends()}>
+        <TouchableOpacity style={styles.back} onPress={() => this.goBack()}>
           <Text style={[{ fontSize: 20 }]}>Go Back</Text>
         </TouchableOpacity>
       </View>
@@ -55,6 +55,7 @@ class SessionPage extends Component {
   }
 
   spawnModal = () => {
+    this.fetchFriends();
     var md = this.state.modal;
     var ss = this.state.session;
     ss.length = 0;
@@ -169,14 +170,23 @@ class SessionPage extends Component {
   }
 
   fetchFriends = () => {
+    let list;
     let friends = fetch("https://app.gpgearheads.org/api/friends_list",
       {
         //mode: "no-cors",
         credentials: "include"
-      }).then(function (response) { return response.json(); })
-      .then(function (json) {
-        console.log(json.friends);
+      }).then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        list = json.friends;
+        console.log("ok");
+        for (let i = 0; i < list.length; i++) {
+          if(!friends[i].confirmed)
+            DATA.push({ id: i, name: list[i] });
+        }
       });
+
+    
   }
 }
 
