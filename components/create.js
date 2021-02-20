@@ -42,14 +42,12 @@ class CreateAccountForm extends Component {
           placeholder=" Username:"
           value={this.props.username}
           onChangeText={this.handleUsername}
-          editable={false}
         ></TextInput>
         <TextInput
           style={login_styles.input}
           placeholder=" Password:"
           value={this.props.password}
           onChangeText={this.handlePassword}
-          editable={false}
         ></TextInput>
 
         <Button
@@ -66,8 +64,10 @@ class CreateAccountForm extends Component {
 
   register = (username, password) => {
     if (username != "" || password != "") {
-      let response = fetch("http://app.gpgearheads.org/api/register", {
+      console.log(username, password);
+      let response = fetch("https://app.gpgearheads.org/api/register", {
         method: "POST",
+        mode: "no-cors",
         body: JSON.stringify({ username: username, password: password }),
       }).then((response) => {
         if (response) {

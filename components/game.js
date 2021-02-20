@@ -36,27 +36,34 @@ class GamePage extends Component {
                 </View>
                 <View style={styles.main}>
                     <TouchableOpacity style={styles.easyBtn} onPress={() => this.defineAttack("Easy")} disabled={this.state.disabled}>
-                        <Text style={[{ color: "white" }, { fontSize: 24 }]}>Easy</Text>
-                        <Text style={[{ color: "black" }, { fontSize: 24 }, { position: "absolute" }, { top: -40 }, { left: "45%" }]}>100</Text>
+                        <Text style={[{ color: "white" }, { fontSize: 20 }]}>Easy</Text>
+                        <Text style={[{ color: "black" }, { fontSize: 20 }, { position: "absolute" }, { top: -40 }, { left: "22.5%" }]}>100</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.mediumBtn} onPress={() => this.defineAttack("Medium")} disabled={this.state.disabled}>
-                        <Text style={[{ color: "white" }, { fontSize: 24 }]}>Medium</Text>
-                        <Text style={[{ color: "black" }, { fontSize: 24 }, { position: "absolute" }, { top: -40 }, { left: "45%" }]}>200</Text>
+                        <Text style={[{ color: "white" }, { fontSize: 20 }]}>Medium</Text>
+                        <Text style={[{ color: "black" }, { fontSize: 20 }, { position: "absolute" }, { top: -40 }, { left: "22.5%" }]}>200</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.hardBtn} onPress={() => this.defineAttack("Hard")} disabled={this.state.disabled}>
-                        <Text style={[{ color: "white" }, { fontSize: 24 }]}>Hard</Text>
-                        <Text style={[{ color: "black" }, { fontSize: 24 }, { position: "absolute" }, { top: -40 }, { left: "45%" }]}>300</Text>
+                        <Text style={[{ color: "white" }, { fontSize: 20 }]}>Hard</Text>
+                        <Text style={[{ color: "black" }, { fontSize: 20 }, { position: "absolute" }, { top: -40 }, { left: "22.5%" }]}>300</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.randBtn} onPress={() => this.defineAttack("Random")} disabled={this.state.disabled}>
-                        <Text style={[{ color: "white" }, { fontSize: 24 }]}>Random Difficulty</Text>
-                        <Text style={[{ color: "black" }, { fontSize: 24 }, { position: "absolute" }, { top: -40 }, { left: "45%" }]}>200</Text>
+                        <Text style={[{ color: "white" }, { fontSize: 20 }]}>Random Difficulty</Text>
+                        <Text style={[{ color: "black" }, { fontSize: 20 }, { position: "absolute" }, { top: -40 }, { left: "22.5%" }]}>200</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.submitBtn} onPress={() => this.submit()}>
-                        <Text style={[{ color: "white" }, { fontSize: 24 }]}>Submit</Text>
+                    <TouchableOpacity style={styles.submitBtn} onPress={() => this.submit()} disabled={this.state.disabled}>
+                        <Text style={[{ color: "white" }, { fontSize: 20 }]}>Submit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.back} onPress={() => this.goBack()}>
+                        <Text style={[{ fontSize: 20 }]}>Go Back</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         );
+    }
+
+    goBack = () => {
+        this.navigation.navigate("Home");
     }
 
     submit = () => {
@@ -127,15 +134,15 @@ const styles = StyleSheet.create({
     },
     display:
     {
-        width: "100vw",
-        height: "65vh",
+        width: 415,
+        height: 450,
         borderColor: "black",
         borderWidth: 5
     },
     main:
     {
-        width: "100vw",
-        height: "28vh",
+        width: 415,
+        height: 280,
         borderColor: "black",
         borderWidth: 5,
         display: "flex",
@@ -146,56 +153,71 @@ const styles = StyleSheet.create({
     easyBtn:
     {
         backgroundColor: "green",
-        width: "15vw",
-        height: "10vh",
+        width: 75,
+        height: 50,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,
-        margin: 50,
+        margin: 2,
     },
     mediumBtn:
     {
         backgroundColor: "orange",
-        width: "15vw",
-        height: "10vh",
+        width: 75,
+        height: 50,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,
-        margin: 50,
+        margin: 2,
     },
     hardBtn:
     {
         backgroundColor: "red",
-        width: "15vw",
-        height: "10vh",
+        width: 75,
+        height: 50,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,
-        margin: 50,
+        margin: 2,
     },
     randBtn:
     {
         backgroundColor: "brown",
-        width: "15vw",
-        height: "10vh",
+        width: 75,
+        height: 50,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,
-        margin: 50,
+        margin: 2,
     },
     submitBtn:
     {
         backgroundColor: "grey",
-        width: "15vw",
-        height: "10vh",
+        width: 75,
+        height: 50,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,
-        margin: 50,
+        margin: 2,
+    },
+    back:
+    {
+        backgroundColor: "lightgrey",
+        width: 100,
+        height: 50,
+        position: "absolute",
+        top: 200,
+        left: 10,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        borderColor: "black",
+        borderWidth: 3,
+        borderRadius: 10
     }
 });

@@ -6,10 +6,10 @@ import { List } from "@material-ui/core";
 //import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Play({ navigation }) {
-  return <PlayPage navigation={navigation} />;
+  return <SessionPage navigation={navigation} />;
 }
 
-class PlayPage extends Component {
+class SessionPage extends Component {
   constructor(props) {
     super(props);
     this.navigation = props.navigation;
@@ -42,17 +42,24 @@ class PlayPage extends Component {
         {this.state.dropdown[0]}
         {this.state.calendar[0]}
         {this.state.session[0]}
+        <TouchableOpacity style={styles.back} onPress={() => this.goBack()}>
+          <Text style={[{ fontSize: 20 }]}>Go Back</Text>
+        </TouchableOpacity>
       </View>
     );
+  }
+
+  goBack = () => {
+    this.navigation.navigate("Home");
   }
 
   spawnModal = () => {
     var md = this.state.modal;
     var ss = this.state.session;
     ss.length = 0;
-    this.setState({session: ss});
+    this.setState({ session: ss });
     md.push(
-      <Modal style={styles.modal}>
+      <View style={styles.modal}>
         <Text style={[{ fontSize: 36 }]}>New Session</Text>
         <TouchableOpacity onPress={() => this.spawnDropdown()}>
           <Text style={[{ fontSize: 24 }, { margin: 10 }]}>View Friends</Text>
@@ -61,13 +68,13 @@ class PlayPage extends Component {
           <Text style={[{ fontSize: 24 }, { margin: 10 }]}>Time</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.submitFriends()}>
-          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "20vh" }, { left: "-7.5vh" }, { borderColor: "black" }, { borderWidth: 3 }]}>Submit Friends</Text>
+          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "20%" }, { left: 0 }, { borderColor: "black" }, { borderWidth: 3 }, {padding: 10}]}>Submit Friends</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.submitAll()}>
-          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "15.25vh" }, { left: "7.5vh" }, { borderColor: "black" }, { borderWidth: 3 }]}>Submit Total</Text>
+          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "15.25%" }, { left: 0 }, { borderColor: "black" }, { borderWidth: 3 }, {padding: 10}]}>Submit Total</Text>
         </TouchableOpacity>
 
-      </Modal>);
+      </View>);
     this.setState({ modal: md });
   }
 
@@ -82,15 +89,15 @@ class PlayPage extends Component {
   spawnSessionList = () => {
     var ss = this.state.session;
     console.log(this.state.date);
-    sessionData.push({id: Math.floor((Math.random() * 9999) + 1).toString(), friends: this.state.friend.toString(), date: this.state.date} );
+    sessionData.push({ id: Math.floor((Math.random() * 9999) + 1).toString(), friends: this.state.friend.toString(), date: this.state.date });
     ss.push(
-      <FlatList style={styles.list} data={sessionData} renderItem={this.renderSession} keyExtractor={item => item.id} />
+      <FlatList style={styles.sessionList} data={sessionData} renderItem={this.renderSession} keyExtractor={item => item.id} />
     );
     this.setState({ session: ss });
     this.state.friend.length = 0;
-    this.setState({friend: this.state.friend});
-    this.setState({date: ''});
-    this.setState({noChosenDate: true});
+    this.setState({ friend: this.state.friend });
+    this.setState({ date: '' });
+    this.setState({ noChosenDate: true });
   }
 
   spawnCalendar = () => {
@@ -113,7 +120,7 @@ class PlayPage extends Component {
     this.state.noChosenDate = false;
     this.state.calendar.length = 0;
     this.setState({ calendar: cl });
-    this.setState({ date: ch});
+    this.setState({ date: ch });
   }
 
   submitFriends = () => {
@@ -138,7 +145,7 @@ class PlayPage extends Component {
   }
 
   renderSession = (item) => {
-    return (<Session item={item.item} play={this}/>);
+    return (<Session item={item.item} play={this} />);
   }
 }
 
@@ -184,14 +191,9 @@ function Date(play) {
 function Session(play) {
   return (
     <TouchableOpacity style={styles.sessionBox} onPress={() => play.play.navigation.navigate("Game")}>
-        <Text>Friends and Date
-          <List>
-            <li>
-              <ul>{play.item.friends}</ul>
-              <ul>{play.item.date}</ul>
-            </li>
-          </List>
-        </Text>
+      <Text>Friends and Date</Text>
+      <Text>{play.item.friends}</Text>
+      <Text>{play.item.date}</Text>
     </TouchableOpacity>
   );
 }
@@ -224,15 +226,15 @@ const styles = StyleSheet.create({
   {
     fontSize: 36,
     position: "absolute",
-    right: -10,
+    right: 0,
     top: 12.75,
   },
   modal: {
-    width: "25%",
-    height: "50%",
+    width: 250,
+    height: 350,
     position: "absolute",
-    left: "37.5vw",
-    top: "25vh",
+    left: 80,
+    top: 100,
     borderColor: "black",
     backgroundColor: "lightblue",
     borderRadius: 10,
@@ -243,16 +245,16 @@ const styles = StyleSheet.create({
   },
   optionBox:
   {
-    width: "15vh",
-    height: "5vh",
+    width: 100,
+    height: 50,
     borderColor: "black",
     borderWidth: 5,
     borderRadius: 10,
   },
   sessionBox:
   {
-    width: "50vh",
-    height: "15vh",
+    width: 350,
+    height: 75,
     borderColor: "black",
     borderWidth: 5,
     borderRadius: 10,
@@ -261,20 +263,45 @@ const styles = StyleSheet.create({
   },
   greenBlock:
   {
-    width: "15vh",
-    height: "5vh",
+    width: 15,
+    height: 5,
     backgroundColor: "green",
     position: "absolute",
-    top: "10vh",
-    left: "10vh",
+    top: 10,
+    left: 10,
   },
   list:
   {
-    width: "100vw",
-    height: "50vh",
+    width: 1000,
+    height: 1000,
     position: "absolute",
-    left: "30vh",
-    top: "20vh",
+    left: "35%",
+    top: "60%",
     zIndex: 1,
+  },
+  sessionList: 
+  {
+    width: 450,
+    height: 1000,
+    position: "absolute",
+    left: "5%",
+    top: "10%",
+    zIndex: 1,
+  },
+  back:
+  {
+    backgroundColor: "lightgrey",
+    width: 100,
+    height: 50,
+    position: "absolute",
+    top: "90%",
+    left: 30,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "black",
+    borderWidth: 3,
+    borderRadius: 10,
+    zIndex: 2
   }
 });

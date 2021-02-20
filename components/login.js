@@ -41,13 +41,7 @@ class LoginForm extends Component {
         <Button
           style={login_styles.submitButton}
           title="Create Account"
-          onPress={() =>
-            this.navigation.navigate("Create Account", {
-              username: this.state.username,
-              password: this.state.password,
-            })
-          }
-        ></Button>
+          onPress={() => this.register(this.state.username, this.state.password)}></Button>
         <Button
           style={login_styles.submitButton}
           title="Login"
@@ -60,16 +54,45 @@ class LoginForm extends Component {
     );
   }
 
+  register = (username, password) => {
+    if (username != "" || password != "") {
+      console.log(username, password);
+      let response = fetch("https://app.gpgearheads.org/api/register", {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify({ username: username, password: password }),
+      }).then((response) => {
+        if (response) {
+          this.navigation.navigate("Login");
+        } else {
+          alert("How did you fail this?");
+        }
+      });
+    } else {
+      alert("Enter valid username or password.");
+    }
+  };
+
   fetchText = (username, password) => {
-    let response = fetch("http://app.gpgearheads.org/api/login", {
+    let response = fetch("https://app.gpgearheads.org/api/login", {
       method: "POST",
       mode: "no-cors",
       body: JSON.stringify({ username: username, password: password }),
       credentials: "include",
     }).then((response) => {
-      //console.log(response.ok);
       if (response) {
-        this.navigation.navigate("Home");
+        let git_response = fetch("https://app.gpgearheads.org/api/get", {
+          mode: "no-cors",
+          credentials: "include",
+        }).then((git_response) => {
+          if (git_response) {
+            this.navigation.navigate("Home");
+          }
+          else {
+            console.log("Get response bad")
+          }
+        });
+
       } else {
         alert("Credentials are invalid.");
       }
