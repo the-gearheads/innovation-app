@@ -45,6 +45,18 @@ class AddFriendsSubmit extends Component {
   }
 }
 
+function fetchFriends() {
+  let friends = fetch("https://app.gpgearheads.org/api/friends_list",
+    {
+      //mode: "no-cors",
+      credentials: "include"
+    }).then(function (response) { return response.json(); })
+    .then(function (json) {
+      console.log(json.friends);
+    });
+}
+
+fetchFriends();
 const DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
