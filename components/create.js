@@ -67,7 +67,7 @@ class CreateAccountForm extends Component {
       console.log(username, password);
       let response = fetch("https://app.gpgearheads.org/api/register", {
         method: "POST",
-        mode: "no-cors",
+        //mode: "no-cors",
         body: JSON.stringify({ username: username, password: password }),
       }).then((response) => {
         if (response) {

@@ -19,6 +19,7 @@ class SessionPage extends Component {
     {
       username: '',
       date: '',
+      sessionName: "",
       noChosenDate: true,
       modal: [],
       dropdown: [],
@@ -31,7 +32,7 @@ class SessionPage extends Component {
 
   render() {
     return (
-      <View style={styles.root} key={"pog"}>
+      <View style={styles.root}>
         <View style={styles.upperContainer}>
           <Text style={styles.header}>Sessions</Text>
           <TouchableOpacity style={styles.newSession} onPress={() => this.spawnModal()}>
@@ -42,7 +43,7 @@ class SessionPage extends Component {
         {this.state.dropdown[0]}
         {this.state.calendar[0]}
         {this.state.session[0]}
-        <TouchableOpacity style={styles.back} onPress={() => this.goBack()}>
+        <TouchableOpacity style={styles.back} onPress={() => this.fetchFriends()}>
           <Text style={[{ fontSize: 20 }]}>Go Back</Text>
         </TouchableOpacity>
       </View>
@@ -67,16 +68,25 @@ class SessionPage extends Component {
         <TouchableOpacity onPress={() => this.spawnCalendar()}>
           <Text style={[{ fontSize: 24 }, { margin: 10 }]}>Time</Text>
         </TouchableOpacity>
+        <TextInput
+          style={[{ margin: 10 }, { borderColor: "black" }, { borderWidth: 2 }]}
+          placeholder=" Session Name:"
+          onChangeText={this.handleSessionName}
+        ></TextInput>
         <TouchableOpacity onPress={() => this.submitFriends()}>
-          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "20%" }, { left: 0 }, { borderColor: "black" }, { borderWidth: 3 }, {padding: 10}]}>Submit Friends</Text>
+          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "20%" }, { left: 0 }, { borderColor: "black" }, { borderWidth: 3 }, { padding: 10 }]}>Submit Friends</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.submitAll()}>
-          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "15.25%" }, { left: 0 }, { borderColor: "black" }, { borderWidth: 3 }, {padding: 10}]}>Submit Total</Text>
+          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "15.25%" }, { left: 0 }, { borderColor: "black" }, { borderWidth: 3 }, { padding: 10 }]}>Submit Total</Text>
         </TouchableOpacity>
 
       </View>);
     this.setState({ modal: md });
   }
+
+  handleSessionName = (text) => {
+    this.setState({ sessionName: text });
+  };
 
   spawnDropdown = () => {
     var dd = this.state.dropdown;
@@ -89,7 +99,7 @@ class SessionPage extends Component {
   spawnSessionList = () => {
     var ss = this.state.session;
     console.log(this.state.date);
-    sessionData.push({ id: Math.floor((Math.random() * 9999) + 1).toString(), friends: this.state.friend.toString(), date: this.state.date });
+    sessionData.push({ id: Math.floor((Math.random() * 9999) + 1).toString(), friends: this.state.friend.toString(), date: this.state.date, sessionName: this.state.sessionName });
     ss.push(
       <FlatList style={styles.sessionList} data={sessionData} renderItem={this.renderSession} keyExtractor={item => item.id} />
     );
@@ -97,6 +107,7 @@ class SessionPage extends Component {
     this.state.friend.length = 0;
     this.setState({ friend: this.state.friend });
     this.setState({ date: '' });
+    this.setState({ sessionName: "" });
     this.setState({ noChosenDate: true });
   }
 
@@ -130,6 +141,15 @@ class SessionPage extends Component {
   }
 
   submitAll = () => {
+    if (this.state.friend.length == 0) {
+      return;
+    }
+    if (this.state.date == "") {
+      return;
+    }
+    if (this.state.sessionName == "") {
+      return;
+    }
     var modal = this.state.modal;
     modal.length = 0;
     this.setState({ modal: modal });
@@ -146,6 +166,17 @@ class SessionPage extends Component {
 
   renderSession = (item) => {
     return (<Session item={item.item} play={this} />);
+  }
+
+  fetchFriends = () => {
+    let friends = fetch("https://app.gpgearheads.org/api/friends_list",
+      {
+        //mode: "no-cors",
+        credentials: "include"
+      }).then(function (response) { return response.json(); })
+      .then(function (json) {
+        console.log(json.friends);
+      });
   }
 }
 
@@ -191,7 +222,7 @@ function Date(play) {
 function Session(play) {
   return (
     <TouchableOpacity style={styles.sessionBox} onPress={() => play.play.navigation.navigate("Game")}>
-      <Text>Friends and Date</Text>
+      <Text>{play.item.sessionName}</Text>
       <Text>{play.item.friends}</Text>
       <Text>{play.item.date}</Text>
     </TouchableOpacity>
@@ -260,6 +291,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: "lightblue",
     margin: 10,
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
   },
   greenBlock:
   {
@@ -279,7 +313,7 @@ const styles = StyleSheet.create({
     top: "60%",
     zIndex: 1,
   },
-  sessionList: 
+  sessionList:
   {
     width: 450,
     height: 1000,

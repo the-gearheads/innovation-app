@@ -17,6 +17,8 @@ class GamePage extends Component {
     }
 
     state = {
+        name: "",
+        friends: [],
         timer: 24,
         boss_health: 1000,
         boss_damage: 100,
@@ -32,7 +34,7 @@ class GamePage extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.display}>
-
+                    
                 </View>
                 <View style={styles.main}>
                     <TouchableOpacity style={styles.easyBtn} onPress={() => this.defineAttack("Easy")} disabled={this.state.disabled}>

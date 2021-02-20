@@ -76,17 +76,17 @@ class LoginForm extends Component {
   fetchText = (username, password) => {
     let response = fetch("https://app.gpgearheads.org/api/login", {
       method: "POST",
-      mode: "no-cors",
+      //mode: "no-cors",
       body: JSON.stringify({ username: username, password: password }),
       credentials: "include",
     }).then((response) => {
       if (response) {
         let git_response = fetch("https://app.gpgearheads.org/api/get", {
-          mode: "no-cors",
+          //mode: "no-cors",
           credentials: "include",
         }).then((git_response) => {
           if (git_response) {
-            this.navigation.navigate("Home");
+            this.navigation.navigate("Session");
           }
           else {
             console.log("Get response bad")
