@@ -7,14 +7,16 @@ import { BottomTabView, createBottomTabNavigator } from '@react-navigation/botto
 import homePage from './homePage.js';
 import friendsPage from './friendsPage.js';
 import Play from './playPage';
+import shopPage from './shopPage.js';
 
 
 const Tab = createBottomTabNavigator();
-export default class navBar extends Component {
+export default friendsPage; class navBar extends Component {
   render() {
     return (
       <NavigationContainer>
         <Tab.Navigator tabBarOptions={{ labelPosition: 'below-icon', showLabel: false }}>
+        <Tab.Navigator initialRootName='Store' tabBarOptions={{ labelPosition: 'below-icon', showLabel: false }}>
           <Tab.Screen name="Stats" component={homePage} options={{
             tabBarLabel: 'Stats', tabBarIcon: (color, size) => (
               <Image style={{ height: '3vmin', width: '3vmin' }} source={{ uri: statsIcon }}></Image>
@@ -35,7 +37,7 @@ export default class navBar extends Component {
               <Image style={{ height: '3vmin', width: '3vmin' }} source={{ uri: settingsIcon }}></Image>
             ),
           }}></Tab.Screen>
-          <Tab.Screen name="Store" component={homePage} options={{
+          <Tab.Screen name="Store" component={shopPage} options={{
             tabBarLabel: 'Store', tabBarIcon: (color, size) => (
               <Image style={{ height: '3vmin', width: '3vmin' }} source={{ uri: storeIcon }}></Image>
             ),
