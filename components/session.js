@@ -43,9 +43,6 @@ class SessionPage extends Component {
         {this.state.dropdown[0]}
         {this.state.calendar[0]}
         {this.state.session[0]}
-        <TouchableOpacity style={styles.back} onPress={() => this.goBack()}>
-          <Text style={[{ fontSize: 20 }]}>Go Back</Text>
-        </TouchableOpacity>
       </View>
     );
   }

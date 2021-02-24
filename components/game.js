@@ -27,9 +27,9 @@ class GamePage extends Component {
         btn_cooldown: 10,
         cooldownEnabled: false,
         attackList: ["Easy", "Medium", "Hard"],
-        exerciseEasyList: [], //Fill something here
-        exerciseMediumList: [], //Fill something here
-        exerciseHardList: [], //Fill something here
+        exerciseEasyList: ["asf"], //Fill something here
+        exerciseMediumList: ["asf"], //Fill something here
+        exerciseHardList: ["fa"], //Fill something here
         currentExercise: '',
         disabled: false
     }
@@ -38,9 +38,12 @@ class GamePage extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.display}>
-                    
+
                 </View>
                 <View style={styles.main}>
+                    <View style={styles.label}>
+                        <Text>{this.state.currentExercise}</Text>
+                    </View>
                     <TouchableOpacity style={styles.easyBtn} onPress={() => this.defineAttack("Easy")} disabled={this.state.disabled}>
                         <Text style={[{ color: "white" }, { fontSize: 20 }]}>Easy</Text>
                         <Text style={[{ color: "black" }, { fontSize: 20 }, { position: "absolute" }, { top: -40 }, { left: "22.5%" }]}>100</Text>
@@ -69,7 +72,7 @@ class GamePage extends Component {
     }
 
     goBack = () => {
-        this.navigation.navigate("Home");
+        this.navigation.navigate("Session");
     }
 
     submit = () => {
@@ -79,44 +82,19 @@ class GamePage extends Component {
         if (!this.state.cooldownEnabled && this.state.player_attack != "") {
             if (attack == "Easy") {
                 bossHealth -= 100;
-                let randEx = Math.floor((Math.random() * this.state.exerciseEasyList.length));
-                this.state.currentExercise = exerciseEasyList[randEx];
             }
             else if (attack == "Medium") {
                 bossHealth -= 200;
-                let randEx = Math.floor((Math.random() * this.state.exerciseMediumList.length));
-                this.state.currentExercise = exerciseMediumList[randEx];
             }
             else if (attack == "Hard") {
                 bossHealth -= 300;
-                let randEx = Math.floor((Math.random() * this.state.exerciseHardList.length));
-                this.state.currentExercise = exerciseHardList[randEx];
             }
             else if (attack == "Random") {
-                let randAttack = Math.floor((Math.random() * 3));
-                if (attackList[randAttack] == "Easy") {
-                    let randEx = Math.floor((Math.random() * this.state.exerciseEasyList.length));
-                    this.state.currentExercise = exerciseEasyList[randEx];
-                }
-                else if (attackList[randAttack] == "Medium") {
-                    let randEx = Math.floor((Math.random() * this.state.exerciseMediumList.length));
-                    this.state.currentExercise = exerciseMediumList[randEx];
-
-                }
-                else if (attackList[randAttack] == "Hard") {
-                    let randEx = Math.floor((Math.random() * this.state.exerciseHardList.length));
-                    this.state.currentExercise = exerciseHardList[randEx];
-
-                }
                 bossHealth -= 200;
             }
         }
         else {
             console.log("You didn't choose a mode or the cooldown period hasn't ended.");
-        }
-
-        if (this.state.timer <= 0) {
-            this.setState({ disabled: false });
         }
     }
 
@@ -124,18 +102,43 @@ class GamePage extends Component {
         this.setState({ player_attack: attack })
         this.setState({ cooldownEnabled: true });
         this.setState({ disabled: true });
+        if (attack == "Easy") {
+            let randEx = Math.floor((Math.random() * this.state.exerciseEasyList.length));
+            this.state.currentExercise = this.state.exerciseEasyList[randEx];
+        }
+        else if (attack == "Medium") {
+            let randEx = Math.floor((Math.random() * this.state.exerciseMediumList.length));
+            this.state.currentExercise = this.state.exerciseMediumList[randEx];
+        }
+        else if (attack == "Hard") {
+            let randEx = Math.floor((Math.random() * this.state.exerciseHardList.length));
+            this.state.currentExercise = this.state.exerciseHardList[randEx];
+        }
+        else if (attack == "Random") {
+            let randAttack = Math.floor((Math.random() * 3));
+            if (attackList[randAttack] == "Easy") {
+                let randEx = Math.floor((Math.random() * this.state.exerciseEasyList.length));
+                this.state.currentExercise = this.state.exerciseEasyList[randEx];
+            }
+            else if (attackList[randAttack] == "Medium") {
+                let randEx = Math.floor((Math.random() * this.state.exerciseMediumList.length));
+                this.state.currentExercise = this.state.exerciseMediumList[randEx];
+            }
+            else if (attackList[randAttack] == "Hard") {
+                let randEx = Math.floor((Math.random() * this.state.exerciseHardList.length));
+                this.state.currentExercise = this.state.exerciseHardList[randEx];
+            }
+        }
+        this.enableTimer();
     }
     enableTimer = () => {
-        let timer;
-        let currentMinute = new Date().getMinutes();
-        let endTime = currentMinute - 10;
         if (this.state.cooldownEnabled) {
-            timer = setInterval(function () {
-                let t = endTime - (1 / 60);
-                if (t <= 0) {
-                    this.state.cooldownEnabled = false;
-                }
-            }, 1000);
+            setTimeout(function() 
+            {
+                console.log("yey");
+                this.state.cooldownEnabled = false;
+                this.state.disabled = false;
+            }, 5000)
         }
     }
 }
@@ -151,21 +154,31 @@ const styles = StyleSheet.create({
     },
     display:
     {
-        width: 415,
-        height: 450,
+        width: "100%",
+        height: "55%",
         borderColor: "black",
         borderWidth: 5
     },
     main:
     {
-        width: 415,
-        height: 280,
+        width: "100%",//415,
+        height: "35%",//280,
         borderColor: "black",
         borderWidth: 5,
         display: "flex",
         alignItems: "center",
         flexDirection: "row",
         justifyContent: "center",
+    },
+    label:
+    {
+        width: "45%",//200,
+        height: "10%",//25,
+        borderColor: "black",
+        borderWidth: 5,
+        position: "absolute",
+        top: "10%",
+        left: "25%"
     },
     easyBtn:
     {
