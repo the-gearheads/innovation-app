@@ -27,6 +27,10 @@ class GamePage extends Component {
         btn_cooldown: 10,
         cooldownEnabled: false,
         attackList: ["Easy", "Medium", "Hard"],
+        exerciseEasyList: [], //Fill something here
+        exerciseMediumList: [], //Fill something here
+        exerciseHardList: [], //Fill something here
+        currentExercise: '',
         disabled: false
     }
 
@@ -75,22 +79,33 @@ class GamePage extends Component {
         if (!this.state.cooldownEnabled && this.state.player_attack != "") {
             if (attack == "Easy") {
                 bossHealth -= 100;
+                let randEx = Math.floor((Math.random() * this.state.exerciseEasyList.length));
+                this.state.currentExercise = exerciseEasyList[randEx];
             }
             else if (attack == "Medium") {
                 bossHealth -= 200;
+                let randEx = Math.floor((Math.random() * this.state.exerciseMediumList.length));
+                this.state.currentExercise = exerciseMediumList[randEx];
             }
             else if (attack == "Hard") {
                 bossHealth -= 300;
+                let randEx = Math.floor((Math.random() * this.state.exerciseHardList.length));
+                this.state.currentExercise = exerciseHardList[randEx];
             }
             else if (attack == "Random") {
                 let randAttack = Math.floor((Math.random() * 3));
                 if (attackList[randAttack] == "Easy") {
-                    //insert code for choosing exercise
+                    let randEx = Math.floor((Math.random() * this.state.exerciseEasyList.length));
+                    this.state.currentExercise = exerciseEasyList[randEx];
                 }
                 else if (attackList[randAttack] == "Medium") {
+                    let randEx = Math.floor((Math.random() * this.state.exerciseMediumList.length));
+                    this.state.currentExercise = exerciseMediumList[randEx];
 
                 }
                 else if (attackList[randAttack] == "Hard") {
+                    let randEx = Math.floor((Math.random() * this.state.exerciseHardList.length));
+                    this.state.currentExercise = exerciseHardList[randEx];
 
                 }
                 bossHealth -= 200;

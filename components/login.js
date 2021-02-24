@@ -86,7 +86,7 @@ class LoginForm extends Component {
           credentials: "include",
         }).then((git_response) => {
           if (git_response) {
-            this.navigation.navigate("Session");
+            this.navigation.navigate("Home");
           }
           else {
             console.log("Get response bad")

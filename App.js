@@ -5,8 +5,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Login from "./components/login.js";
 import CreateAccount from "./components/create.js";
-import Home from "./components/homepage.js";
-import Friends from "./components/friends.js";
+import Home from "./components/homePage.js";
+import Friends from "./components/friendsPage.js";
 import Session from "./components/session.js";
 import Game from "./components/game.js";
 
@@ -18,7 +18,6 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Session" component={Session} />
-        
         <Stack.Screen name="Game" component={Game} />
         <Stack.Screen name="Friends" component={Friends} />
         <Stack.Screen name="Home" component={Home} />
