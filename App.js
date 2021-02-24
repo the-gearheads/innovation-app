@@ -20,7 +20,6 @@ export default function App() {
         <Stack.Screen name="Session" component={Session} />
         <Stack.Screen name="Game" component={Game} />
         <Stack.Screen name="Friends" component={Friends} />
-        <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Create Account" component={CreateAccount} />
       </Stack.Navigator>
     </NavigationContainer>
