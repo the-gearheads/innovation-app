@@ -1,27 +1,22 @@
+import EStyleSheet from 'react-native-extended-stylesheet';
+EStyleSheet.build();
+
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
-import Login from "./components/login.js";
-import CreateAccount from "./components/create.js";
-import Home from "./components/homePage.js";
-import Friends from "./components/friendsPage.js";
-import Session from "./components/session.js";
-import Game from "./components/game.js";
+import Login from './components/login.js'
+import navBar from "./components/navBar.js";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator cardStyle={{ flex: 1 }}>
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Session" component={Session} />
-        <Stack.Screen name="Game" component={Game} />
-        <Stack.Screen name="Friends" component={Friends} />
-        <Stack.Screen name="Create Account" component={CreateAccount} />
+        <Stack.Screen name="Navbar" component={navBar} />
       </Stack.Navigator>
-    </NavigationContainer>
+    </NavigationContainer >
   );
 }
