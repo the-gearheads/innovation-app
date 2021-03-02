@@ -3,32 +3,48 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, FlatList, SegmentedControlIOSComponent } from "react-native";
 import PropTypes from "prop-types";
 import { List } from "@material-ui/core";
+import { createStackNavigator } from "@react-navigation/stack";
+import Game from "./game.js";
 //import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function Play({ navigation }) {
-  return <SessionPage navigation={navigation} />;
+const Stack = createStackNavigator();
+var nav;
+
+export default function Play() {
+  //return <SessionPage navigation={navigation} />;
+  return (
+    <Stack.Navigator headerMode={"none"}>
+      <Stack.Screen name="Session" component={SessionPageFinal} />
+      <Stack.Screen name="Game" component={Game} />
+    </Stack.Navigator>);
+}
+
+function SessionPageFinal({ navigation }) {
+  return (<SessionPage navigation={navigation} />);
 }
 
 class SessionPage extends Component {
   constructor(props) {
     super(props);
     this.navigation = props.navigation;
+    nav = props.navigation
   }
 
   state =
     {
       username: '',
-      date: '',
       sessionName: "",
-      noChosenDate: true,
       modal: [],
       dropdown: [],
       friend: [],
-      calendar: [],
       session: [],
-
-
+      friendOpened: false,
+      sessionId: 0
     };
+
+  componentWillMount() {
+    this.spawnSessionList();
+  }
 
   render() {
     return (
@@ -41,7 +57,6 @@ class SessionPage extends Component {
         </View>
         {this.state.modal[0]}
         {this.state.dropdown[0]}
-        {this.state.calendar[0]}
         {this.state.session[0]}
       </View>
     );
@@ -62,9 +77,6 @@ class SessionPage extends Component {
         <Text style={[{ fontSize: 36 }]}>New Session</Text>
         <TouchableOpacity onPress={() => this.spawnDropdown()}>
           <Text style={[{ fontSize: 24 }, { margin: 10 }]}>View Friends</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.spawnCalendar()}>
-          <Text style={[{ fontSize: 24 }, { margin: 10 }]}>Time</Text>
         </TouchableOpacity>
         <TextInput
           style={[{ margin: 10 }, { borderColor: "black" }, { borderWidth: 2 }]}
@@ -87,49 +99,57 @@ class SessionPage extends Component {
   };
 
   spawnDropdown = () => {
-    var dd = this.state.dropdown;
-    dd.push(
-      <FlatList style={styles.list} data={DATA} renderItem={this.renderDropdown} keyExtractor={item => item.id} />
-    );
-    this.setState({ dropdown: dd });
+    if (!this.state.friendOpened) {
+      var dd = this.state.dropdown;
+      dd.push(
+        <FlatList style={styles.list} data={DATA} renderItem={this.renderDropdown} keyExtractor={item => item.id} />
+      );
+      this.setState({ dropdown: dd });
+      this.setState({ friendOpened: true });
+    }
+    else {
+      return;
+    }
   }
 
   spawnSessionList = () => {
     var ss = this.state.session;
-    console.log(this.state.date);
-    sessionData.push({ id: Math.floor((Math.random() * 9999) + 1).toString(), friends: this.state.friend.toString(), date: this.state.date, sessionName: this.state.sessionName });
-    ss.push(
-      <FlatList style={styles.sessionList} data={sessionData} renderItem={this.renderSession} keyExtractor={item => item.id} />
-    );
-    this.setState({ session: ss });
-    this.state.friend.length = 0;
-    this.setState({ friend: this.state.friend });
-    this.setState({ date: '' });
-    this.setState({ sessionName: "" });
-    this.setState({ noChosenDate: true });
-  }
+    ss.length = 0;
+    let session = this;
+    sessionData.length = 0;
+    let response = fetch("https://app.gpgearheads.org/api/sessions",
+      {
+        credentials: "include"
+      }).then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        console.log(json);
+        for (let i = 0; i < json.sessions.length; i++) {
+          sessionData.push({ id: json.sessions[i].id, sessionName: json.sessions[i].name, friends: json.sessions[i].users.toString() });
 
-  spawnCalendar = () => {
-    var cl = this.state.calendar;
-    cl.push(
-      <FlatList style={styles.list} data={Dates} renderItem={this.renderCalendar} keyExtractor={item => item.id} />
-    );
-    this.setState({ calendar: cl });
+        }
+        ss.push(
+          <FlatList style={styles.sessionList} data={sessionData} renderItem={session.renderSession} keyExtractor={item => item.id.toString()} />
+        );
+        session.setState({ session: ss });
+        session.state.friend.length = 0;
+        session.setState({ friend: session.state.friend });
+        session.setState({ sessionName: "" });
+        session.setState({ friendOpened: false });
+
+      });
+
   }
 
   addFriend = (name) => {
     var ch = this.state.friend;
+    for (let i = 0; i < this.state.friend.length; i++) {
+      if (name == this.state.friend[i]) {
+        return;
+      }
+    }
     ch.push(name);
     this.setState({ friend: ch });
-  }
-
-  addDate = (n) => {
-    var ch = n;
-    var cl = this.state.calendar;
-    this.state.noChosenDate = false;
-    this.state.calendar.length = 0;
-    this.setState({ calendar: cl });
-    this.setState({ date: ch });
   }
 
   submitFriends = () => {
@@ -142,15 +162,26 @@ class SessionPage extends Component {
     if (this.state.friend.length == 0) {
       return;
     }
-    if (this.state.date == "") {
-      return;
-    }
     if (this.state.sessionName == "") {
       return;
     }
     var modal = this.state.modal;
     modal.length = 0;
     this.setState({ modal: modal });
+    let response = fetch("https://app.gpgearheads.org/api/create_session",
+      {
+        method: "POST",
+        mode: "no-cors",
+        credentials: "include",
+        body: JSON.stringify({ name: this.state.sessionName, users: this.state.friend }),
+      }).then((response) => {
+        if (response.ok) {
+          console.log("Sent");
+        }
+        else {
+          return;
+        }
+      });
     this.spawnSessionList();
   }
 
@@ -158,16 +189,11 @@ class SessionPage extends Component {
     return (<Friend item={item.item} play={this} />);
   }
 
-  renderCalendar = (item) => {
-    return (<Date item={item.item} play={this} />);
-  }
-
   renderSession = (item) => {
     return (<Session item={item.item} play={this} />);
   }
 
   fetchFriends = () => {
-    let list;
     let friends = fetch("https://app.gpgearheads.org/api/friends_list",
       {
         //mode: "no-cors",
@@ -175,34 +201,31 @@ class SessionPage extends Component {
       }).then(function (response) {
         return response.json();
       }).then(function (json) {
-        list = json.friends;
+        let friends = json.friends;
         console.log("ok");
-        for (let i = 0; i < list.length; i++) {
-          if(!friends[i].confirmed)
-            DATA.push({ id: i, name: list[i] });
+        for (let i = 0; i < friends.length; i++) {
+          if (friends[i].confirmed)
+            DATA.push({ id: i, name: friends[i] });
         }
       });
-
-    
   }
+
 }
 
 const DATA = [
   {
     id: '1',
-    name: 'ok'
+    name: 'john'
   },
   {
     id: '2',
-    name: 'oof'
+    name: 'pog'
   }
 ];
 
 const sessionData = [
   //Session instances, use to display multiple instances of sessions
 ];
-
-const Dates = [{ id: '1', date: "1 Hour" }, { id: '2', date: "1 Day" }, { id: '3', date: "1 Week" }, { id: '4', date: "1 Month" }];
 
 function Friend(play) {
   let itemData = play.play.state.check;
@@ -213,27 +236,18 @@ function Friend(play) {
     </TouchableOpacity>);
 }
 
-function Date(play) {
-  if (play.play.state.noChosenDate) {
-    return (
-      <TouchableOpacity style={styles.optionBox} onPress={() => play.play.addDate(play.item.date)}>
-        <Text>{play.item.date}</Text>
-      </TouchableOpacity>
-    );
-  }
-  else {
-    return (<View></View>);
-  }
-}
-
 function Session(play) {
   return (
-    <TouchableOpacity style={styles.sessionBox} onPress={() => play.play.navigation.navigate("Game")}>
+    <TouchableOpacity style={styles.sessionBox} onPress={() => Redirect({ id: play.item.id })}>
+      <Text>{play.item.id}</Text>
       <Text>{play.item.sessionName}</Text>
       <Text>{play.item.friends}</Text>
-      <Text>{play.item.date}</Text>
     </TouchableOpacity>
   );
+}
+
+function Redirect(route) {
+  nav.navigate("Game", route);
 }
 
 
@@ -264,15 +278,15 @@ const styles = StyleSheet.create({
   {
     fontSize: 36,
     position: "absolute",
-    right: 0,
-    top: 12.75,
+    right: "-1%",
+    top: "5%",
   },
   modal: {
-    width: 250,
-    height: 350,
+    width: "60%",
+    height: "45%",
     position: "absolute",
-    left: 80,
-    top: 100,
+    left: "20%",
+    top: "15%",
     borderColor: "black",
     backgroundColor: "lightblue",
     borderRadius: 10,
@@ -283,7 +297,7 @@ const styles = StyleSheet.create({
   },
   optionBox:
   {
-    width: 100,
+    width: "25%",
     height: 50,
     borderColor: "black",
     borderWidth: 5,
@@ -291,7 +305,7 @@ const styles = StyleSheet.create({
   },
   sessionBox:
   {
-    width: 350,
+    width: "40%",
     height: 75,
     borderColor: "black",
     borderWidth: 5,
@@ -313,19 +327,19 @@ const styles = StyleSheet.create({
   },
   list:
   {
-    width: 1000,
-    height: 1000,
+    width: "100%",
+    height: "100%",
     position: "absolute",
-    left: "35%",
+    left: "37.5%",
     top: "60%",
     zIndex: 1,
   },
   sessionList:
   {
-    width: 450,
-    height: 1000,
+    width: "100%",
+    height: "100%",
     position: "absolute",
-    left: "5%",
+    left: "27.5%",
     top: "10%",
     zIndex: 1,
   },
