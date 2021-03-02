@@ -53,7 +53,7 @@ const styles2 = EStyleSheet.create({
         justifyContent: 'center'
     },
     image: {
-        width: '30%',
+        width: '20%',
         height: '100%'
     }
 });
