@@ -102,7 +102,7 @@ class SessionPage extends Component {
     if (!this.state.friendOpened) {
       var dd = this.state.dropdown;
       dd.push(
-        <FlatList style={styles.list} data={DATA} renderItem={this.renderDropdown} keyExtractor={item => item.id} />
+        <FlatList style={styles.list} data={DATA} renderItem={this.renderDropdown} keyExtractor={item => item.id.toString()} />
       );
       this.setState({ dropdown: dd });
       this.setState({ friendOpened: true });
@@ -204,8 +204,9 @@ class SessionPage extends Component {
         let friends = json.friends;
         console.log("ok");
         for (let i = 0; i < friends.length; i++) {
+          console.log(friends[i]);
           if (friends[i].confirmed)
-            DATA.push({ id: i, name: friends[i] });
+            DATA.push({ id: friends[i].id, name: friends[i].name });
         }
       });
   }
@@ -213,14 +214,7 @@ class SessionPage extends Component {
 }
 
 const DATA = [
-  {
-    id: '1',
-    name: 'john'
-  },
-  {
-    id: '2',
-    name: 'pog'
-  }
+
 ];
 
 const sessionData = [

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, FlatList, Image, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, FlatList, Image, ScrollView, SafeAreaView, Dimensions } from 'react-native';
 import { friendsIcon, playIcon, settingsIcon, statsIcon, homeIcon, storeIcon } from './imageNames.js';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -11,7 +11,7 @@ export default class shopPage extends Component {
         return (
             <SafeAreaView style={styles.root}>
                 {/* <Text style={styles.pointsText}>{accountPoints}</Text> */}
-                <ScrollView contentContainerStyle={styles.itemsContainer}>
+                <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.itemsContainer}>
                     <Item parent={this} imgURL={friendsIcon} price={300} name='Fire Avatar'></Item>
                     <Item parent={this} imgURL={playIcon} price={500} name='Cloud Avatar'></Item>
                     <Item parent={this} imgURL={settingsIcon} price={350} name='Water Avatar'></Item>
@@ -52,7 +52,8 @@ class Item extends Component {
         );
     }
 }
-
+const screenHeight = Dimensions.get('window').height;
+console.log(screenHeight);
 const styles = EStyleSheet.create({
     root: {
         flex: 1
@@ -69,7 +70,7 @@ const styles = EStyleSheet.create({
         flexGrow: 0,
         alignItems: 'center',
         width: '30%',
-        height: '50%',
+        height: (0.5 * screenHeight),
         borderWidth: 1,
         borderColor: 'black',
         marginTop: '5%',

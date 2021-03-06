@@ -91,15 +91,15 @@ class GamePage extends Component {
         }
         else if (attack == "Random") {
             let randAttack = Math.floor((Math.random() * 3));
-            if (attackList[randAttack] == "Easy") {
+            if (this.state.attackList[randAttack] == "Easy") {
                 let randEx = Math.floor((Math.random() * this.state.exerciseEasyList.length));
                 this.state.currentExercise = this.state.exerciseEasyList[randEx];
             }
-            else if (attackList[randAttack] == "Medium") {
+            else if (this.state.attackList[randAttack] == "Medium") {
                 let randEx = Math.floor((Math.random() * this.state.exerciseMediumList.length));
                 this.state.currentExercise = this.state.exerciseMediumList[randEx];
             }
-            else if (attackList[randAttack] == "Hard") {
+            else if (this.state.attackList[randAttack] == "Hard") {
                 let randEx = Math.floor((Math.random() * this.state.exerciseHardList.length));
                 this.state.currentExercise = this.state.exerciseHardList[randEx];
             }

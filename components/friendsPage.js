@@ -82,66 +82,9 @@ class AddFriendsSubmit extends Component {
     )
   }
 }
-// class AddFriendsSubmit extends Component {
 
-//   handleUsername = (text) => {
-//     this.setState({ username: text })
-//   }
 
-//   state =
-//     {
-//       username: ''
-//     }
 
-//   addFriend(username) {
-//     let response = fetch("https://app.gpgearheads.org/api/friends_list",
-//       {
-//         method: "POST",
-//         credentials: "include",
-//         body: JSON.stringify({ username: username }),
-//       }).then(function (response) {
-//         return response.json();
-//       }).then(function (json) {
-//         //Add logic to check if name already exists in database
-//         json.friends.push(username);
-//         console.log(json.friends);
-//       });
-//   }
-//   render() {
-//     return (
-//       <View>
-//         <TextInput style={styles.usernameInput} onChangeText={this.handleUsername}></TextInput>
-//         <TouchableOpacity style={styles.submitUsername} onPress={this.addFriend(this.state.username)} ><Text style={styles.submitText}>Add Friend</Text></TouchableOpacity>
-//       </View>
-//       // <View style={styles.submitUsername}><Text style={styles.submitText}>Add Friend</Text></View>
-//     )
-//   }
-// }
-// let FRIENDS = [];
-// let REQUESTS = [];
-// var retrieveFriends = () => {
-//   let list;
-//   let friends = fetch("https://app.gpgearheads.org/api/friends_list",
-//     {
-//       //mode: "no-cors",
-//       credentials: "include"
-//     }).then(function (response) {
-//       return response.json();
-//     }).then(function (json) {
-//       list = json.friends;
-//       console.log("ok");
-//       for (let i = 0; i < list.length; i++) {
-//         if (friends[i].confirmed) {
-//           FRIENDS.push({ id: i, name: list[i] });
-//         } else {
-//           REQUESTS.push({ id: i, name: list[i] });
-//         }
-//       }
-//     });
-//   console.log(REQUESTS);
-
-// }
-// retrieveFriends();
 const DATA = [
   {
     id: 10,
@@ -170,7 +113,7 @@ function Friend(item) {
       {/* <Image style={styles.friendPicture} source={{ uri: playIcon }} /> */}
       <Text style={styles.friendName}>{item.name}</Text>
     </View>
-    <View style={styles.sharedGames}><Text style={styles.sharedGamesText}>{item.sharedgames}</Text></View>
+    {/* <View style={styles.sharedGames}><Text style={styles.sharedGamesText}>{item.sharedgames}</Text></View> */}
 
   </View>);
 }
@@ -186,28 +129,52 @@ class FriendsList extends Component {
       <FlatList
         data={FRIENDS}
         renderItem={this.renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
       />
 
     );
   }
 }
 
-function Request(item) {
-  item = item.item;
-  return (
-    <View style={styles.request}>
-      <View style={styles.requestLeft}>
-        <View style={styles.requestFirstC}>
-          {/* <Image style={styles.friendPicture} source={{ uri: playIcon }} /> */}
-          <Text style={styles.requestName}>{item.name}</Text>
-        </View>
-        <View style={styles.requestTitle}><Text style={styles.requestTitleText}>Friend Request</Text></View>
-      </View>
-      <View style={style.requestRight}>
+class Request extends Component {
+  constructor(props) {
+    super(props);
+    this.acceptFriend = this.acceptFriend.bind(this);
+    console.log(this.props.item.name);
+  }
 
-      </View>
-    </View>);
+  acceptFriend() {
+    let response = fetch("https://app.gpgearheads.org/api/accept_friend",
+      {
+        method: "POST",
+        mode: "no-cors",
+        credentials: "include",
+        body: JSON.stringify({ username: this.props.item.name }),
+      }).then((response) => {
+        if (response.ok) {
+          console.log("Sent");
+        }
+        else {
+          return;
+        }
+      });
+  }
+  render() {
+    return (
+      <View style={styles.request}>
+        <View style={styles.requestLeft}>
+          <View style={styles.requestFirstC}>
+            {/* <Image style={styles.friendPicture} source={{ uri: playIcon }} /> */}
+            <Text style={styles.requestName}>{this.props.item.name}</Text>
+          </View>
+          <View style={styles.requestTitle}><Text style={styles.requestTitleText}>Friend Request</Text></View>
+        </View>
+        <View style={styles.requestRight}>
+          <TouchableOpacity style={styles.requestBtn} onPress={this.acceptFriend}><Text style={styles.requestBtnText}>Accept</Text></TouchableOpacity>
+          <TouchableOpacity style={styles.requestBtn}><Text style={styles.requestBtnText}>Deny</Text></TouchableOpacity>
+        </View>
+      </View>);
+  }
 }
 
 class RequestsList extends Component {
@@ -221,7 +188,7 @@ class RequestsList extends Component {
       <FlatList
         data={REQUESTS}
         renderItem={this.renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.id.toString()}
       />
 
     );
@@ -244,7 +211,8 @@ const styles = EStyleSheet.create({
   }, friendFirstC: {
     display: 'flex',
     flexDirection: 'row',
-    height: '50%'
+    height: '100%',
+    alignItems: 'center'
   }, friendName: {
     fontSize: 20,
     color: 'grey',
@@ -258,7 +226,7 @@ const styles = EStyleSheet.create({
   },
   request: {
     width: '100%',
-    height: 50,
+    height: 70,
     backgroundColor: 'darkgrey',
     borderBottomWidth: 5,
     borderColor: 'black',
@@ -267,16 +235,20 @@ const styles = EStyleSheet.create({
   },
   requestLeft: {
     width: "50%",
-    height: 50,
+    height: '100%',
   },
   requestRight: {
     width: "50%",
-    height: 50,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center'
   },
   requestFirstC: {
     display: 'flex',
     flexDirection: 'row',
-    height: 25
+    height: '50%'
   }, requestName: {
     fontSize: 20,
     color: 'grey',
@@ -293,9 +265,21 @@ const styles = EStyleSheet.create({
     margin: '2%'
   },
   requestTitle: {
-    height: '15%',
+    height: '50%',
     display: 'flex',
     justifyContent: 'flex-end'
+  },
+  requestBtn: {
+    height: '40%',
+    width: '70%',
+    backgroundColor: 'white',
+    borderRadius: 10
+  },
+  requestBtnText: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center'
   },
   sharedGamesText: {
     color: 'black',
