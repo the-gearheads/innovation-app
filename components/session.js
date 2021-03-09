@@ -227,8 +227,9 @@ class SessionPage extends Component {
         let friends = json.friends;
         console.log("ok");
         for (let i = 0; i < friends.length; i++) {
+          console.log(friends[i]);
           if (friends[i].confirmed)
-            DATA.push({ id: i, name: friends[i].name });
+            DATA.push({ id: friends[i].id, name: friends[i].name });
         }
       });
   }
@@ -236,14 +237,7 @@ class SessionPage extends Component {
 }
 
 const DATA = [
-  {
-    id: '1',
-    name: 'john'
-  },
-  {
-    id: '2',
-    name: 'pog'
-  }
+
 ];
 
 const sessionData = [

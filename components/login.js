@@ -1,7 +1,8 @@
+import { red } from "@material-ui/core/colors";
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, Text, View, TextInput, Button, TouchableOpacity} from "react-native";
+//import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Login({ navigation }) {
   return <LoginForm navigation={navigation} />;
@@ -163,26 +164,50 @@ var retrieveFriends = () => {
 const login_styles = StyleSheet.create({
   root: {
     backgroundColor: 'rgb(108, 148, 255)',
-    flex: 1
+    flex: 1,
+    
   },
   container: {
     paddingTop: 23,
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  header: 
+  {
+    fontSize: 24,
+    color: "red",
+    backgroundColor: "white",
+    borderColor: "black",
+    borderWidth: 3,
+    borderRadius: 10,
+    paddingLeft: 15,
+    paddingRight: 15
   },
   input: {
     margin: 15,
+    width: "50%",
     height: 40,
     borderColor: "black",
-    borderWidth: 1,
+    borderWidth: 5,
+    borderRadius: 10,
     backgroundColor: "white",
     color: "red",
+    fontFamily: "Comic Sans MS"
   },
   submitButton: {
     backgroundColor: "#7a42f4",
     padding: 10,
     margin: 15,
     height: 40,
+    width: "50%",
+    textAlign: "center",
+    borderRadius: 10
   },
   submitButtonText: {
     color: "white",
+    fontFamily: "Comic Sans MS"
   },
 });

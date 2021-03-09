@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, FlatList, Image, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, FlatList, Image, ScrollView, SafeAreaView, Dimensions } from 'react-native';
 import { friendsIcon, playIcon, settingsIcon, statsIcon, homeIcon, storeIcon } from './imageNames.js';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
@@ -84,7 +84,8 @@ class Item extends Component {
         );
     }
 }
-
+const screenHeight = Dimensions.get('window').height;
+console.log(screenHeight);
 const styles = EStyleSheet.create({
     root: {
         flex: 1,
@@ -102,7 +103,7 @@ const styles = EStyleSheet.create({
         flexGrow: 0,
         alignItems: 'center',
         width: '30%',
-        height: '50%',
+        height: (0.5 * screenHeight),
         borderWidth: 1,
         borderColor: 'black',
         marginTop: '5%',
