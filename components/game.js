@@ -1,9 +1,10 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, FlatList } from "react-native";
+import { StyleSheet, Text, View, TextInput, Modal, TouchableOpacity, FlatList, Image } from "react-native";
 import PropTypes from "prop-types";
 import { List } from "@material-ui/core";
 import { color } from "react-native-reanimated";
+import { monsterBackground, monsterBackgroundPerson } from "./imageNames.js";
 //import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Game({ route, navigation }) {
@@ -29,13 +30,59 @@ class GamePage extends Component {
         currentExercise: '',
         disabled: false
     }
+    componentDidMount() {
+        var thisVar = this;
+        var avatarNum;
+        let sessionId = this.props.sessionId;
+        fetch("https://app.gpgearheads.org/api/sessions",
+            {
+                credentials: "include"
+            }).then(function (fetchResponse) {
+                return fetchResponse.json();
+            }).then(function (json) {
+                for (var i = 0; i < json.sessions.length; i++) {
+                    if (json.sessions[i].id == sessionId) {
+                        avatarNum = json.sessions[i].users.length;
+                        console.log(json.sessions[i].users.length);
+                        var avatarJSX = [];
+                        for (var q = 0; q < avatarNum; q++) {
+                            avatarJSX.push(<Image source={{ uri: monsterBackgroundPerson }} style={[styles.avatar, {
+                                top: (25 + Math.floor(Math.random() * 25) + 1) + '%',
+                                left: (Math.floor(Math.random() * 50) + 1) + '%'
+                            }]} ></Image>);
+                        }
+                        thisVar.setState({ avatarsJSX: avatarJSX });
+                    }
+                }
+            });
+    }
 
     render() {
+        let avatarsJSX = this.state.avatarsJSX;
+        let aJSX;
+        console.log(avatarsJSX);
+        if (typeof avatarsJSX == 'undefined') {
+            return null;
+        }
+        // console.log(avatarsJSX[0])
         return (
             <View style={styles.container}>
-                <View style={styles.display}>
+                {/* <Image source={{ uri: monsterBackgroundPerson }} style={[styles.avatar, {
+                    top: (25 + Math.floor(Math.random() * 25) + 1) + '%',
+                    left: (Math.floor(Math.random() * 50) + 1) + '%'
+                }]} ></Image>
+                <Image source={{ uri: monsterBackgroundPerson }} style={[styles.avatar, {
+                    top: (25 + Math.floor(Math.random() * 25) + 1) + '%',
+                    left: (Math.floor(Math.random() * 50) + 1) + '%'
+                }]} ></Image>
+                <Image source={{ uri: monsterBackgroundPerson }} style={[styles.avatar, {
+                    top: (25 + Math.floor(Math.random() * 25) + 1) + '%',
+                    left: (Math.floor(Math.random() * 50) + 1) + '%'
+                }]} ></Image> */}
+                {avatarsJSX}
+                <Image source={{ uri: monsterBackground }} style={styles.display}>
 
-                </View>
+                </Image>
                 <View style={styles.main}>
                     <View style={styles.label}>
                         <Text>{this.state.currentExercise}{this.state.boss_health}</Text>
@@ -147,6 +194,14 @@ const styles = StyleSheet.create({
         height: "55%",
         borderColor: "black",
         borderWidth: 5
+    },
+    avatar: {
+        zIndex: 1500,
+        width: '10%',
+        height: '10%',
+        position: 'absolute',
+        // top: "50%"
+
     },
     main:
     {

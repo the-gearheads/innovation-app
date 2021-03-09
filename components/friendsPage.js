@@ -126,7 +126,7 @@ class FriendsList extends Component {
   render() {
     return (
 
-      <FlatList
+      <FlatList style={{ height: 'auto' }}
         data={FRIENDS}
         renderItem={this.renderItem}
         keyExtractor={item => item.id.toString()}
@@ -200,23 +200,26 @@ const styles = EStyleSheet.create({
   root: {
     display: 'flex',
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "rgb(108, 148, 255)"
   },
   friend: {
     width: '100%',
     height: 50,
-    backgroundColor: 'darkgrey',
+    backgroundColor: 'white',
     borderBottomWidth: 5,
     borderColor: 'black'
   }, friendFirstC: {
     display: 'flex',
     flexDirection: 'row',
     height: '100%',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   }, friendName: {
     fontSize: 20,
-    color: 'grey',
-    marginLeft: '5%'
+    fontFamily: 'Arial',
+    color: 'red',
+    // marginLeft: '5%',
+    fontWeight: '900',
   },
   friendPicture: {
     height: '100%',
@@ -227,7 +230,7 @@ const styles = EStyleSheet.create({
   request: {
     width: '100%',
     height: 70,
-    backgroundColor: 'darkgrey',
+    backgroundColor: 'white',
     borderBottomWidth: 5,
     borderColor: 'black',
     display: 'flex',
@@ -251,8 +254,8 @@ const styles = EStyleSheet.create({
     height: '50%'
   }, requestName: {
     fontSize: 20,
-    color: 'grey',
-    marginLeft: '5%'
+    color: 'red',
+    // marginLeft: '5%'
   },
   requestPicture: {
     height: '100%',
@@ -272,7 +275,7 @@ const styles = EStyleSheet.create({
   requestBtn: {
     height: '40%',
     width: '70%',
-    backgroundColor: 'white',
+    backgroundColor: 'grey',
     borderRadius: 10
   },
   requestBtnText: {

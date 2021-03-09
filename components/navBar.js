@@ -14,7 +14,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 var playHeight = 90;
-var playHtoW = (2000 / 1500) * (screenHeight / screenWidth);
+var playHtoW = (2000 / 1500) * (screenHeight / screenWidth) * 0.1;
 //END icon vars
 const Tab = createBottomTabNavigator();
 export default class navBar extends Component {
@@ -24,10 +24,14 @@ export default class navBar extends Component {
     }
     render() {
         return (
-            <Tab.Navigator initialRootName='Store' cardStyle={{ flex: 1 }} tabBarOptions={{ style: { backgroundColor: 'rgb(28,90,255)' }, labelPosition: 'below-icon', showLabel: true }}>
+            <Tab.Navigator initialRootName='Store' cardStyle={{ flex: 1 }} tabBarOptions={{ showLabel: false, style: { height: '7%', backgroundColor: 'rgb(28,90,255)' }, labelPosition: 'below-icon' }}>
                 <Tab.Screen name="Friends" options={{
                     tabBarLabel: 'Friends', tabBarIcon: (color, size) => (
-                        <Image style={styles2.image} source={{ uri: friendsIcon }}></Image>
+                        <Image style={{
+                            width: '30%',
+                            height: '90%',
+                            borderRadius: 10
+                        }} source={{ uri: friendsIcon }}></Image>
                     ),
                 }}>
                     {() =>
@@ -37,8 +41,8 @@ export default class navBar extends Component {
                 <Tab.Screen name="Play" component={Play} options={{
                     tabBarLabel: 'Play', tabBarIcon: (color, size) => (
                         <Image style={{
-                            width: (playHeight * playHtoW) + '%',
-                            height: playHeight + '%',
+                            width: 30 + '%',
+                            height: 80 + '%',
                             borderRadius: 10
                         }} source={{ uri: playIcon }}></Image>
                     ),
