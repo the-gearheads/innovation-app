@@ -4,14 +4,20 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, FlatList, I
 import { friendsIcon, playIcon, settingsIcon, statsIcon, homeIcon, storeIcon } from './imageNames.js';
 import EStyleSheet from 'react-native-extended-stylesheet';
 
-var accountPoints = 300;
-
-export default class shopPage extends Component {
+var accountPoints;
+export default class ShopPage extends Component {
+    constructor(props) {
+        super(props);
+        accountPoints = props.points;
+        console.log(accountPoints);
+    }
     render() {
         return (
             <SafeAreaView style={styles.root}>
                 {/* <Text style={styles.pointsText}>{accountPoints}</Text> */}
+                <Text style={[{ position: "absolute" }, { fontSize: 50 }, { top: "1%" }, { left: "1%" }, { backgroundColor: "white" }, { color: "red" }, { borderRadius: 10 }, { borderColor: "black" }, { borderWidth: 5 }, { fontFamily: "Comic Sans MS" }]}>Points: {accountPoints}</Text>
                 <ScrollView contentContainerStyle={styles.itemsContainer}>
+
                     <Item parent={this} imgURL={friendsIcon} price={300} name='Fire Avatar'></Item>
                     <Item parent={this} imgURL={playIcon} price={500} name='Cloud Avatar'></Item>
                     <Item parent={this} imgURL={settingsIcon} price={350} name='Water Avatar'></Item>
@@ -34,9 +40,35 @@ class Item extends Component {
         this.onBuy = this.onBuy.bind(this);
     }
     onBuy() {
-        accountPoints -= this.props.price;
-        this.setState({ itemIsVisible: false });
-        this.props.parent.forceUpdate();
+        //accountPoints -= this.props.price;
+        let shop = this;
+        if (accountPoints - this.props.price >= 0) {
+            let response = fetch("https://app.gpgearheads.org/api/buy",
+                {
+                    method: "POST",
+                    // mode: "no-cors",
+                    body: JSON.stringify({ avatar: this.props.name, price: this.props.price }),
+                    credentials: "include",
+                }).then((response) => {
+                    if (response.ok) {
+                        let avatarResponse = fetch("https://app.gpgearheads.org/api/avatar",
+                            {
+                                credentials: "include",
+                            }).then(function (avatarResponse) {
+                                return avatarResponse.json();
+                            }).then(function (json) {
+                                console.log(json);
+                                shop.forceUpdate();
+                            });
+                    }
+                    else {
+                        console.log("Fail time")
+                    }
+                });
+        }
+        else {
+            alert("Not enough points to buy this!");
+        }
     }
     render() {
         if (!this.state.itemIsVisible) {
@@ -55,7 +87,8 @@ class Item extends Component {
 
 const styles = EStyleSheet.create({
     root: {
-        flex: 1
+        flex: 1,
+        backgroundColor: 'rgb(108, 148, 255)',
     },
     itemsContainer: {
         display: 'flex',

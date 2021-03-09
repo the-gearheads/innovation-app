@@ -8,27 +8,41 @@ import Game from "./game.js";
 //import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Stack = createStackNavigator();
+
 var nav;
 
 export default function Play() {
   //return <SessionPage navigation={navigation} />;
   return (
-    <Stack.Navigator>
+    <Stack.Navigator headerMode={"none"}>
       <Stack.Screen name="Session" component={SessionPageFinal} />
       <Stack.Screen name="Game" component={Game} />
     </Stack.Navigator>);
 }
 
-function SessionPageFinal({ navigation }) {
-  return (<SessionPage navigation={navigation} />);
+class SessionPageFinal extends Component {
+  constructor(props) {
+    super(props);
+    if (typeof (this.props.route.params) != "undefined") {
+      if (game.gameOver == true) {
+        this.forceUpdate();
+      }
+    }
+  }
+  render() 
+  {
+    return(<SessionPage navigation={this.props.navigation}/>)
+  }
 }
 
-class SessionPage extends Component  {
+class SessionPage extends Component {
   constructor(props) {
     super(props);
     this.navigation = props.navigation;
-    nav = props.navigation
+    nav = props.navigation;
   }
+
+
 
   state =
     {
@@ -44,7 +58,6 @@ class SessionPage extends Component  {
   componentWillMount() {
     this.spawnSessionList();
   }
-
   render() {
     return (
       <View style={styles.root}>
@@ -73,9 +86,10 @@ class SessionPage extends Component  {
     this.setState({ session: ss });
     md.push(
       <View style={styles.modal}>
-        <Text style={[{ fontSize: 36 }]}>New Session</Text>
+        <Text style={[{ fontSize: 36 }, {color: "red"}, {fontFamily: "Comic Sans MS"}]}>New Session</Text>
+        <TouchableOpacity style={[{position: "absolute"}, {left: "95%"}]} onPress={() => this.deleteModal()}><Text style={[{fontSize: 36}, {fontFamily: "Comic Sans MS"}, {color: "red"}]}>X</Text></TouchableOpacity>
         <TouchableOpacity onPress={() => this.spawnDropdown()}>
-          <Text style={[{ fontSize: 24 }, { margin: 10 }]}>View Friends</Text>
+          <Text style={[{ fontSize: 24 }, { margin: 10 }, {color: "red"}, {fontFamily: "Comic Sans MS"}]}>View Friends</Text>
         </TouchableOpacity>
         <TextInput
           style={[{ margin: 10 }, { borderColor: "black" }, { borderWidth: 2 }]}
@@ -83,10 +97,10 @@ class SessionPage extends Component  {
           onChangeText={this.handleSessionName}
         ></TextInput>
         <TouchableOpacity onPress={() => this.submitFriends()}>
-          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "20%" }, { left: 0 }, { borderColor: "black" }, { borderWidth: 3 }, { padding: 10 }]}>Submit Friends</Text>
+          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "20%" }, { left: 0 }, { borderColor: "black" }, { borderWidth: 3 }, { padding: 10 }, {color: "red"}, {fontFamily: "Comic Sans MS"}]}>Submit Friends</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.submitAll()}>
-          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "15.25%" }, { left: 0 }, { borderColor: "black" }, { borderWidth: 3 }, { padding: 10 }]}>Submit Total</Text>
+          <Text style={[{ fontSize: 15 }, { margin: 10 }, { position: "relative" }, { top: "15.25%" }, { left: 0 }, { borderColor: "black" }, { borderWidth: 3 }, { padding: 10 }, {color: "red"}, {fontFamily: "Comic Sans MS"}]}>Submit Total</Text>
         </TouchableOpacity>
 
       </View>);
@@ -97,17 +111,28 @@ class SessionPage extends Component  {
     this.setState({ sessionName: text });
   };
 
+  deleteModal = () => 
+  {
+    var md = this.state.modal;
+    md.length = 0;
+    this.setState({modal: md});
+    this.spawnSessionList();
+  }
+
   spawnDropdown = () => {
     if (!this.state.friendOpened) {
       var dd = this.state.dropdown;
       dd.push(
-        <FlatList style={styles.list} data={DATA} renderItem={this.renderDropdown} keyExtractor={item => item.id} />
+        <FlatList style={styles.list} data={DATA} renderItem={this.renderDropdown} keyExtractor={item => item.id.toString()} />
       );
       this.setState({ dropdown: dd });
       this.setState({ friendOpened: true });
     }
     else {
-      return;
+      var dd = this.state.dropdown;
+      dd.length = 0;
+      this.setState({ dropdown: dd });
+      this.setState({ friendOpened: false });
     }
   }
 
@@ -125,7 +150,6 @@ class SessionPage extends Component  {
         console.log(json);
         for (let i = 0; i < json.sessions.length; i++) {
           sessionData.push({ id: json.sessions[i].id, sessionName: json.sessions[i].name, friends: json.sessions[i].users.toString() });
-
         }
         ss.push(
           <FlatList style={styles.sessionList} data={sessionData} renderItem={session.renderSession} keyExtractor={item => item.id.toString()} />
@@ -204,7 +228,7 @@ class SessionPage extends Component  {
         console.log("ok");
         for (let i = 0; i < friends.length; i++) {
           if (friends[i].confirmed)
-            DATA.push({ id: i, name: friends[i] });
+            DATA.push({ id: i, name: friends[i].name });
         }
       });
   }
@@ -230,23 +254,21 @@ function Friend(play) {
   let itemData = play.play.state.check;
   return (
     <TouchableOpacity style={styles.optionBox} onPress={() => play.play.addFriend(play.item.name)}>
-      <Text>{play.item.name}</Text>
+      <Text style={styles.text}>{play.item.name}</Text>
       {itemData}
     </TouchableOpacity>);
 }
 
 function Session(play) {
   return (
-    <TouchableOpacity style={styles.sessionBox} onPress={() => Redirect({id: play.item.id})}>
-      <Text>{play.item.id}</Text>
-      <Text>{play.item.sessionName}</Text>
-      <Text>{play.item.friends}</Text>
+    <TouchableOpacity style={styles.sessionBox} onPress={() => Redirect({ id: play.item.id })}>
+      <Text style={styles.text}>{play.item.sessionName}</Text>
+      <Text style={styles.text}>{play.item.friends}</Text>
     </TouchableOpacity>
   );
 }
 
-function Redirect(route) 
-{
+function Redirect(route) {
   nav.navigate("Game", route);
 }
 
@@ -259,7 +281,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: 'rgb(108, 148, 255)',
   },
   upperContainer:
   {
@@ -271,7 +293,8 @@ const styles = StyleSheet.create({
   header:
   {
     fontSize: 36,
-    margin: 25
+    marginRight: 50,
+    fontFamily: 'Comic Sans MS',
 
   },
   newSession:
@@ -280,6 +303,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: "-1%",
     top: "5%",
+    fontFamily: 'Comic Sans MS',
   },
   modal: {
     width: "60%",
@@ -288,7 +312,8 @@ const styles = StyleSheet.create({
     left: "20%",
     top: "15%",
     borderColor: "black",
-    backgroundColor: "lightblue",
+    borderWidth: 5,
+    backgroundColor: "white",
     borderRadius: 10,
     display: "flex",
     alignItems: "center",
@@ -300,6 +325,7 @@ const styles = StyleSheet.create({
     width: "25%",
     height: 50,
     borderColor: "black",
+    backgroundColor: "white",
     borderWidth: 5,
     borderRadius: 10,
   },
@@ -310,11 +336,12 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 5,
     borderRadius: 10,
-    backgroundColor: "lightblue",
+    backgroundColor: "white",
     margin: 10,
     display: "flex",
     alignItems: "center",
     flexDirection: "column",
+    
   },
   greenBlock:
   {
@@ -358,5 +385,11 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 10,
     zIndex: 2
+  },
+  text: 
+  {
+    fontSize: 20,
+    fontFamily: 'Comic Sans MS',
+    color: "red"
   }
 });

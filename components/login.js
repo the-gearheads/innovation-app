@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function Login({ navigation }) {
   return <LoginForm navigation={navigation} />;
@@ -39,17 +40,15 @@ class LoginForm extends Component {
             onChangeText={this.handlePassword}
           ></TextInput>
 
-          <Button
+          <TouchableOpacity
             style={login_styles.submitButton}
-            title="Create Account"
-            onPress={() => this.register(this.state.username, this.state.password)}></Button>
-          <Button
+            onPress={() => this.register(this.state.username, this.state.password)}><Text style={login_styles.submitButtonText}>Create Account</Text></TouchableOpacity>
+          <TouchableOpacity
             style={login_styles.submitButton}
-            title="Login"
             onPress={() =>
               this.fetchText(this.state.username, this.state.password)
             }
-          ></Button>
+          ><Text style={login_styles.submitButtonText}>Login</Text></TouchableOpacity>
           <StatusBar style="auto" />
         </View>
       </View>
@@ -112,9 +111,19 @@ class LoginForm extends Component {
                 REQUESTS.push({ id: element.id, name: element.name });
               }
             });
-            navigateVar.navigate("Navbar", { "FRIENDS": FRIENDS, "REQUESTS": REQUESTS });
-
+            fetch("https://app.gpgearheads.org/api/points",
+              {
+                // mode: "no-cors",
+                credentials: "include"
+              }).then(function (response) {
+                return response.json();
+              }).then(function (json) {
+                let points = json.points;
+                console.log(points);
+                navigateVar.navigate("Navbar", { "FRIENDS": FRIENDS, "REQUESTS": REQUESTS, "accountPoints": points });
+              });
           });
+
         /* End*/
       }
       else {
@@ -150,6 +159,7 @@ var retrieveFriends = () => {
 
   return { "FRIENDS": FRIENDS, "REQUESTS": REQUESTS };
 }
+
 const login_styles = StyleSheet.create({
   root: {
     backgroundColor: 'rgb(108, 148, 255)',
@@ -157,13 +167,14 @@ const login_styles = StyleSheet.create({
   },
   container: {
     paddingTop: 23,
-
   },
   input: {
     margin: 15,
     height: 40,
-    borderColor: "#7a42f4",
+    borderColor: "black",
     borderWidth: 1,
+    backgroundColor: "white",
+    color: "red",
   },
   submitButton: {
     backgroundColor: "#7a42f4",

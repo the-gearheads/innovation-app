@@ -23,9 +23,60 @@ class GamePage extends Component {
         player_attack: "",
         damage: 0,
         attackList: ["Easy", "Medium", "Hard"],
-        exerciseEasyList: ["asf"], //Fill something here
-        exerciseMediumList: ["asf"], //Fill something here
-        exerciseHardList: ["fa"], //Fill something here
+        exerciseEasyList: ["Starter Pushup (On knees)",
+        "Plank",
+        "Bird of Paradise pose",
+        "Dips",
+        "Squats",
+        "Walking lunge",
+        "High lunge pose",
+        "Low lunge pose",
+        "Wall sit",
+        "Jumping Jacks",
+        "Side to side shuffle jump",
+        "Running in place",
+        "Bridges",
+        "Bodyweight bridges",
+        "Walking high knees",
+        "Eight-point shoulder opener",
+        "90/90 stretch",
+        "Butterflies",
+        "Tree pose",
+        "Happy baby pose",
+        "Low side to side lunge",
+        "Prayer mudra"], //Fill something here
+        exerciseMediumList: ["Pushup Plus",
+        "Stacked feet pushup",
+        "Plank with arm variation",
+        "Wall squat thrusts",
+        "One legged balance/squat/reach",
+        "Jump squats",
+        "Toe Touches (on back)",
+        "Crunches",
+        "Reverse Crunches",
+        "Leg lifts",
+        "Lower body bicycles (bicycle kicking)",
+        "Situps",
+        "Glut bridge march",
+        "Squat pulses",
+        "Mountain climber",
+        "Hamstring stretch",
+        "Lizard pose",
+        "Squat palm press pose",
+        "Knees chest chin pose",
+        "Wild thing pose"], //Fill something here
+        exerciseHardList: ["Diamond Pushup (Super pushup)",
+        "Triple stop pushup",
+        "Side plank pose",
+        "1 arm Burpee (Pushup)",
+        "Russian Twists",
+        "Supermans",
+        "Ab-bicycles",
+        "Star crunches",
+        "Rotating Mountain Climber",
+        "Lunge jumps",
+        "Squat jacks",
+        "Bow pose"], //Fill something here
         currentExercise: '',
         disabled: false
     }
@@ -73,7 +124,7 @@ class GamePage extends Component {
 
     defineAttack = (attack) => {
         this.setState({ player_attack: attack })
-        this.setState({ disabled: true });
+        //this.setState({ disabled: true });
         if (attack == "Easy") {
             let randEx = Math.floor((Math.random() * this.state.exerciseEasyList.length));
             this.state.currentExercise = this.state.exerciseEasyList[randEx];
@@ -91,15 +142,15 @@ class GamePage extends Component {
         }
         else if (attack == "Random") {
             let randAttack = Math.floor((Math.random() * 3));
-            if (attackList[randAttack] == "Easy") {
+            if (this.state.attackList[randAttack] == "Easy") {
                 let randEx = Math.floor((Math.random() * this.state.exerciseEasyList.length));
                 this.state.currentExercise = this.state.exerciseEasyList[randEx];
             }
-            else if (attackList[randAttack] == "Medium") {
+            else if (this.state.attackList[randAttack] == "Medium") {
                 let randEx = Math.floor((Math.random() * this.state.exerciseMediumList.length));
                 this.state.currentExercise = this.state.exerciseMediumList[randEx];
             }
-            else if (attackList[randAttack] == "Hard") {
+            else if (this.state.attackList[randAttack] == "Hard") {
                 let randEx = Math.floor((Math.random() * this.state.exerciseHardList.length));
                 this.state.currentExercise = this.state.exerciseHardList[randEx];
             }
@@ -117,6 +168,7 @@ class GamePage extends Component {
                 }
             });
         let sessionId = this.props.sessionId;
+        let game = this;
         let fetchResponse = fetch("https://app.gpgearheads.org/api/sessions",
             {
                 credentials: "include"
@@ -128,9 +180,19 @@ class GamePage extends Component {
                     if(json.sessions[i].id == sessionId) 
                     {
                         console.log(json.sessions[i].bossHealth);
+                        if(json.sessions[i].bossHealth <= 0) 
+                        {
+                            alert("You win!");
+                            game.redirectSessionPage();
+                        }
                     }
                 }
             });
+    }
+
+    redirectSessionPage = () => 
+    {
+        this.navigation.navigate("Session", {gameOver: true});
     }
 }
 
